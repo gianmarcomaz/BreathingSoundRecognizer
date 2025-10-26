@@ -1,0 +1,70 @@
+==============================================
+UNIFIED NEONATAL MONITORING APP - QUICK START
+==============================================
+
+STEP 1: Install Dependencies
+-----------------------------
+pip install streamlit opencv-python sounddevice
+
+Or install everything:
+pip install -r requirements.txt
+
+STEP 2: Run the App
+-------------------
+streamlit run unified_neonatal_app.py
+
+Or double-click: run_unified_app.bat
+
+STEP 3: Open in Browser
+------------------------
+The app will open at: http://localhost:8501
+
+==============================================
+USAGE
+==============================================
+
+VIEW 1: Breathing Sound Recognition
+-----------------------------------
+- Click "Start Monitoring" button
+- System captures 2-second audio windows
+- View real-time metrics:
+  * Breathing Rate (bpm)
+  * Cry Intensity
+  * Distress Score
+  * Alert Level
+- Test different conditions with buttons
+
+VIEW 2: Image & Vitals Analysis
+------------------------------
+- Upload baby photo (PNG/JPG)
+- System analyzes skin color
+- Enter vital signs
+- Click "Analyze Vitals"
+- View Risk of Resuscitation (RoR) score
+- Download JSON report
+
+==============================================
+TROUBLESHOOTING
+==============================================
+
+Issue: "No module named 'streamlit'"
+Fix: pip install streamlit
+
+Issue: Microphone not working
+Fix: App uses synthetic data (demo mode)
+
+Issue: Image processing fails
+Fix: Try different photo with better lighting
+
+==============================================
+FILES
+==============================================
+
+unified_neonatal_app.py  - Main app (run this)
+UNIFIED_APP_README.md     - Full documentation
+SETUP_UNIFIED_APP.md     - Setup guide
+UNIFIED_APP_SUMMARY.md   - Architecture overview
+QUICK_START.txt          - This file
+run_unified_app.bat      - Windows launcher
+
+==============================================
