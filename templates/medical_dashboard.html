@@ -993,7 +993,40 @@
         }
         
         function emergencyAlert() {
-            alert('🚨 EMERGENCY ALERT TRIGGERED\n\nThis would immediately notify:\n• Medical staff\n• Emergency response team\n• Hospital alert systems');
+            // Prompt for phone number or use default demo number
+            const phone_number = prompt('Enter emergency contact phone number:', '+12025551234');
+            
+            if (!phone_number) {
+                return; // User cancelled
+            }
+            
+            // Show loading state
+            showNotification('📞 Placing emergency call via Vapi...', 'info');
+            
+            // Call the backend to trigger Vapi emergency call
+            fetch('/trigger_emergency_call', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    phone_number: phone_number
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    showNotification(`✅ Emergency call placed to ${data.phone_number}!`, 'success');
+                    console.log('Emergency call triggered:', data);
+                } else {
+                    showNotification(`⚠️ ${data.message}\n\nHint: ${data.hint || 'Configure VAPI_SECRET_TOKEN in .env'}`, 'warning');
+                    console.warn('Emergency call failed:', data);
+                }
+            })
+            .catch(error => {
+                console.error('Emergency call error:', error);
+                showNotification('❌ Failed to place emergency call. Check console for details.', 'error');
+            });
         }
         
         function showNotification(message, type = 'info') {
