@@ -608,61 +608,112 @@ def start_monitoring():
 
 @app.route('/analyze_audio', methods=['POST'])
 def analyze_audio():
-    """Real-time audio analysis endpoint (robust against bad input)."""
+    """Real-time audio analysis endpoint (hardened)"""
     try:
-        data = request.get_json(force=True) or {}
-    except Exception as e:
-        # never hard-crash; tell the UI what's wrong
-        return jsonify({"ok": False, "error": f"invalid json: {e}"}), 200
+        data = request.get_json(silent=True) or {}
+        is_realtime = bool(data.get("real_time"))
 
-    is_rt = bool(data.get("real_time"))
-    if is_rt:
-        audio_data = data.get("audio_data")
-        sr = int(data.get("sample_rate") or neonatal_monitor.sample_rate)
+        if is_realtime:
+            # ---- validate payload ----
+            audio_data = data.get("audio_data")
+            sr = int(data.get("sample_rate") or 44100)
 
-        # Guard clauses: no audio yet or wrong shape
-        if not isinstance(audio_data, list) or len(audio_data) < int(0.5 * sr):
-            # need at least ~0.5s to say anything useful
+            # Only process if we have meaningful audio data
+            if not audio_data or len(audio_data) < 100:
+                # No chunk yet, don't fail the session
+                return jsonify({
+                    "ok": False,
+                    "error": "no audio chunk provided yet",
+                    "breathing_rate": 0.0,
+                    "breathing_pattern": "no_audio",
+                    "cry_intensity": 0.0,
+                    "cry_frequency": 0.0,
+                    "oxygen_saturation_estimate": 0.0,
+                    "distress_score": 0.0,
+                    "alert_level": "normal",
+                    "analysis_latency_ms": 0.0,
+                    "golden_minute_active": neonatal_monitor.golden_minute_active
+                }), 200
+
+            try:
+                # Convert to waveform
+                x = np.array(audio_data, dtype=np.float32)
+
+                # Safety: if data looks like frequency magnitudes (0..1), de-bias to ~PCM range
+                if np.nanmax(np.abs(x)) <= 1.0 and np.nanmean(x) > -0.1:
+                    x = x - np.nanmean(x)
+
+                # Downsample to 200 Hz for robust breathing band DSP
+                target_sr = 200
+                if sr != target_sr:
+                    # Use polyphase resample for stability
+                    gcd = np.gcd(sr, target_sr)
+                    up, down = target_sr // gcd, sr // gcd
+                    x = scipy.signal.resample_poly(x, up, down)
+                    sr = target_sr
+
+                # Run analysis on downsampled signal
+                old_sr = neonatal_monitor.sample_rate
+                neonatal_monitor.sample_rate = sr
+                metrics = neonatal_monitor.analyze_audio_stream(x)
+                neonatal_monitor.sample_rate = old_sr
+
+            except Exception as e:
+                # Never 500; surface the issue to the UI
+                return jsonify({
+                    "ok": False,
+                    "error": f"analysis failed: {e}",
+                    "breathing_rate": 0.0,
+                    "breathing_pattern": "processing_error",
+                    "cry_intensity": 0.0,
+                    "cry_frequency": 0.0,
+                    "oxygen_saturation_estimate": 0.0,
+                    "distress_score": 0.0,
+                    "alert_level": "warning",
+                    "golden_minute_active": neonatal_monitor.golden_minute_active
+                }), 200
+
+            # Success path
             return jsonify({
-                "ok": False,
-                "error": "insufficient_audio",
-                "needed_samples": int(0.5 * sr),
-                "got": len(audio_data) if isinstance(audio_data, list) else 0,
-                "alert_level": "no_audio"
+                "ok": True,
+                "timestamp": metrics.timestamp.isoformat(),
+                "breathing_rate": metrics.breathing_rate,
+                "breathing_pattern": metrics.breathing_pattern,
+                "cry_intensity": metrics.cry_intensity,
+                "cry_frequency": metrics.cry_frequency,
+                "oxygen_saturation_estimate": metrics.oxygen_saturation_estimate,
+                "distress_score": metrics.distress_score,
+                "alert_level": metrics.alert_level.value,
+                "golden_minute_active": neonatal_monitor.golden_minute_active,
+                "analysis_latency_ms": 25.0,
+                "real_time_analysis": True
             }), 200
 
-        try:
-            pcm = np.array(audio_data, dtype=np.float32)
-            pcm = _preprocess_realtime_pcm(pcm, sr)
-            metrics = neonatal_monitor.analyze_audio_stream(pcm)
-        except Exception as e:
-            return jsonify({
-                "ok": False,
-                "error": f"analysis_failed: {e}",
-                "alert_level": "processing_error"
-            }), 200
-
-    else:
-        # Synthetic/test path (keeps your demo working)
-        test_audio = np.random.randn(int(neonatal_monitor.sample_rate * 2)).astype(np.float32)
+        # Fallback: synthetic/test mode
+        test_audio = np.random.randn(int(neonatal_monitor.sample_rate * 2))
         metrics = neonatal_monitor.analyze_audio_stream(test_audio)
-        sr = neonatal_monitor.sample_rate
+        return jsonify({
+            "ok": True,
+            "timestamp": metrics.timestamp.isoformat(),
+            "breathing_rate": metrics.breathing_rate,
+            "breathing_pattern": metrics.breathing_pattern,
+            "cry_intensity": metrics.cry_intensity,
+            "cry_frequency": metrics.cry_frequency,
+            "oxygen_saturation_estimate": metrics.oxygen_saturation_estimate,
+            "distress_score": metrics.distress_score,
+            "alert_level": metrics.alert_level.value,
+            "golden_minute_active": neonatal_monitor.golden_minute_active,
+            "analysis_latency_ms": 25.0
+        }), 200
 
-    # success path
-    return jsonify({
-        "ok": True,
-        "timestamp": metrics.timestamp.isoformat(),
-        "breathing_rate": metrics.breathing_rate,
-        "breathing_pattern": metrics.breathing_pattern,
-        "cry_intensity": metrics.cry_intensity,
-        "cry_frequency": metrics.cry_frequency,
-        "oxygen_saturation_estimate": metrics.oxygen_saturation_estimate,
-        "distress_score": metrics.distress_score,
-        "alert_level": metrics.alert_level.value,
-        "analysis_latency_ms": 25.0,
-        "golden_minute_active": neonatal_monitor.golden_minute_active,
-        "sample_rate": sr
-    }), 200
+    except Exception as e:
+        # Still never 500
+        logger.error(f"Audio analysis endpoint failed: {e}")
+        return jsonify({
+            "ok": False,
+            "error": f"endpoint failure: {e}",
+            "alert_level": "warning"
+        }), 200
 
 @app.route('/get_alerts', methods=['GET'])
 def get_alerts():
