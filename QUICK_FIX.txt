@@ -1,0 +1,18 @@
+QUICK FIX FOR "Repository not found" ERROR
+==========================================
+
+1. Go to: https://github.com/new
+
+2. Repository name: BreathingSoundRecognizer
+   (or any name you want)
+
+3. Choose Public or Private
+
+4. DO NOT check any boxes (README, .gitignore, license)
+
+5. Click "Create repository"
+
+6. Come back here and run:
+   git push -u origin master
+
+That's it! ✅

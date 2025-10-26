@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Voice AI Assistant - Lava + Phoenix + LiveKit + Vapi</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            max-width: 800px;
+            width: 100%;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .header h1 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 2.5em;
+        }
+        
+        .header p {
+            color: #666;
+            font-size: 1.1em;
+        }
+        
+        .sponsors {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+        
+        .sponsor {
+            background: #f8f9fa;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-weight: bold;
+            color: #495057;
+            border: 2px solid #e9ecef;
+        }
+        
+        .ready {
+            background: #d4edda;
+            border-color: #c3e6cb;
+            color: #155724;
+        }
+        
+        .modes {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+        
+        .mode-card {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            border: 2px solid #e9ecef;
+            transition: all 0.3s ease;
+        }
+        
+        .mode-card:hover {
+            border-color: #667eea;
+            transform: translateY(-5px);
+        }
+        
+        .mode-card h3 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 1.5em;
+        }
+        
+        .mode-card p {
+            color: #666;
+            margin-bottom: 20px;
+        }
+        
+        .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 25px;
+            font-size: 1.1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+        
+        .btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .chat-section {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 30px;
+            margin-top: 30px;
+        }
+        
+        .chat-input {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .chat-input input {
+            flex: 1;
+            padding: 15px;
+            border: 2px solid #e9ecef;
+            border-radius: 25px;
+            font-size: 1em;
+            outline: none;
+        }
+        
+        .chat-input input:focus {
+            border-color: #667eea;
+        }
+        
+        .chat-messages {
+            max-height: 300px;
+            overflow-y: auto;
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            border: 2px solid #e9ecef;
+        }
+        
+        .message {
+            margin-bottom: 15px;
+            padding: 10px 15px;
+            border-radius: 15px;
+            max-width: 80%;
+        }
+        
+        .message.user {
+            background: #667eea;
+            color: white;
+            margin-left: auto;
+        }
+        
+        .message.ai {
+            background: #e9ecef;
+            color: #333;
+        }
+        
+        .status {
+            text-align: center;
+            padding: 20px;
+            margin-top: 20px;
+            border-radius: 10px;
+            font-weight: bold;
+        }
+        
+        .status.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .status.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
+        .status.info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+        
+        @media (max-width: 768px) {
+            .modes {
+                grid-template-columns: 1fr;
+            }
+            
+            .sponsors {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎤 Voice AI Assistant</h1>
+            <p>Powered by cutting-edge AI technologies</p>
+            <div class="sponsors">
+                <div class="sponsor ready">🔥 Lava Payments ✅</div>
+                <div class="sponsor">🔍 Arize Phoenix</div>
+                <div class="sponsor">📡 LiveKit</div>
+                <div class="sponsor">📞 Vapi</div>
+            </div>
+            <p style="margin-top: 15px; color: #28a745; font-weight: bold;">
+                ✅ Lava + OpenAI Integration Ready! Using GPT-4o-mini
+            </p>
+        </div>
+        
+        <div class="modes">
+            <div class="mode-card">
+                <h3>📞 Phone Call</h3>
+                <p>Talk to the AI via phone call using Vapi's telephony platform</p>
+                <input type="tel" id="phoneNumber" placeholder="+1234567890" style="width: 100%; padding: 10px; margin-bottom: 15px; border: 2px solid #e9ecef; border-radius: 10px;">
+                <button class="btn" onclick="startPhoneCall()">Start Call (Demo)</button>
+            </div>
+            
+            <div class="mode-card">
+                <h3>🌐 Browser Voice</h3>
+                <p>Voice chat directly in your browser using Vapi's web SDK</p>
+                <button class="btn" onclick="startBrowserVoice()" id="voiceBtn">Start Voice Chat (Demo)</button>
+            </div>
+        </div>
+        
+        <div class="chat-section">
+            <h3>💬 Text Chat (✅ Lava + OpenAI Ready!)</h3>
+            <div class="chat-input">
+                <input type="text" id="chatInput" placeholder="Type your message here..." onkeypress="handleChatKeyPress(event)">
+                <button class="btn" onclick="sendChatMessage()" style="width: auto; padding: 15px 25px;">Send</button>
+            </div>
+            <div class="chat-messages" id="chatMessages">
+                <div class="message ai">
+                    <strong>AI Assistant:</strong> Hello! I'm powered by GPT-4o-mini through Lava Payments. Your integration is working! Try asking me anything.
+                </div>
+            </div>
+        </div>
+        
+        <div id="status" class="status" style="display: none;"></div>
+    </div>
+
+    <script>
+        // Configuration from Flask template
+        const VAPI_PUBLIC_KEY = '{{ vapi_public_key }}';
+        const VAPI_ASSISTANT_ID = '{{ vapi_assistant_id }}';
+        
+        let isVoiceChatActive = false;
+        
+        function showStatus(message, type = 'info') {
+            const statusEl = document.getElementById('status');
+            statusEl.textContent = message;
+            statusEl.className = `status ${type}`;
+            statusEl.style.display = 'block';
+            
+            setTimeout(() => {
+                statusEl.style.display = 'none';
+            }, 5000);
+        }
+        
+        async function startPhoneCall() {
+            const phoneNumber = document.getElementById('phoneNumber').value;
+            
+            if (!phoneNumber) {
+                showStatus('Please enter a phone number', 'error');
+                return;
+            }
+            
+            try {
+                showStatus('Demo Mode: In production, this would call ' + phoneNumber, 'info');
+                
+                const response = await fetch('/startCall', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ phoneNumber })
+                });
+                
+                const result = await response.json();
+                
+                if (result.demo_mode) {
+                    showStatus(result.message, 'info');
+                } else if (result.success) {
+                    showStatus(`Call initiated to ${phoneNumber}! Answer your phone.`, 'success');
+                } else {
+                    showStatus(result.error || 'Failed to start call', 'error');
+                }
+            } catch (error) {
+                console.error('Call error:', error);
+                showStatus('Demo mode - Vapi integration ready for configuration', 'info');
+            }
+        }
+        
+        function startBrowserVoice() {
+            const voiceBtn = document.getElementById('voiceBtn');
+            
+            if (!isVoiceChatActive) {
+                voiceBtn.textContent = 'End Voice Chat (Demo)';
+                isVoiceChatActive = true;
+                showStatus('Demo Mode: Voice chat ready for Vapi configuration', 'info');
+            } else {
+                voiceBtn.textContent = 'Start Voice Chat (Demo)';
+                isVoiceChatActive = false;
+                showStatus('Voice chat demo ended', 'info');
+            }
+        }
+        
+        async function sendChatMessage() {
+            const input = document.getElementById('chatInput');
+            const message = input.value.trim();
+            
+            if (!message) return;
+            
+            // Add user message to chat
+            addMessageToChat(message, 'user');
+            input.value = '';
+            
+            // Show loading
+            const loadingMsg = addMessageToChat('Thinking...', 'ai');
+            
+            try {
+                const response = await fetch('/chat', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ message })
+                });
+                
+                const result = await response.json();
+                
+                // Remove loading message
+                loadingMsg.remove();
+                
+                if (result.response) {
+                    addMessageToChat(`${result.response} (Model: ${result.model || 'gpt-4o-mini'})`, 'ai');
+                } else {
+                    addMessageToChat('Sorry, I encountered an error.', 'ai');
+                }
+            } catch (error) {
+                console.error('Chat error:', error);
+                loadingMsg.remove();
+                addMessageToChat('Sorry, I could not process your request.', 'ai');
+            }
+        }
+        
+        function addMessageToChat(message, sender) {
+            const chatMessages = document.getElementById('chatMessages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${sender}`;
+            
+            if (sender === 'user') {
+                messageDiv.innerHTML = `<strong>You:</strong> ${message}`;
+            } else {
+                messageDiv.innerHTML = `<strong>AI Assistant:</strong> ${message}`;
+            }
+            
+            chatMessages.appendChild(messageDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+            
+            return messageDiv;
+        }
+        
+        function handleChatKeyPress(event) {
+            if (event.key === 'Enter') {
+                sendChatMessage();
+            }
+        }
+        
+        // Check service health on load
+        async function checkHealth() {
+            try {
+                const response = await fetch('/health');
+                const health = await response.json();
+                
+                console.log('🏥 Service Health:', health);
+                
+                if (health.configuration?.lava_configured && health.configuration?.openai_key_configured) {
+                    console.log('✅ Lava + OpenAI integration is ready!');
+                    showStatus('✅ Lava + OpenAI integration working! Try the chat below.', 'success');
+                } else {
+                    console.log('⚠️ Some services need configuration');
+                }
+            } catch (error) {
+                console.error('Health check failed:', error);
+            }
+        }
+        
+        // Initialize app
+        document.addEventListener('DOMContentLoaded', () => {
+            checkHealth();
+            console.log('🚀 Voice AI App loaded successfully');
+            console.log('🔥 Lava Payments integration ready!');
+            console.log('🤖 OpenAI GPT-4o-mini ready!');
+        });
+    </script>
+</body>
+</html>

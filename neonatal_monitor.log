@@ -1,0 +1,7 @@
+2025-10-25 03:50:23,840 - neonatal_monitor - INFO -    Medical usage tracking: ACTIVE
+2025-10-25 03:50:24,258 - neonatal_monitor - INFO -    Real-time audio: wss://audiofeature-d4yyp515.livekit.cloud
+2025-10-25 03:50:24,726 - neonatal_monitor - INFO -    Emergency alerts: ACTIVE
+2025-10-25 03:50:24,731 - neonatal_monitor - INFO -    Medical usage tracking: ACTIVE
+2025-10-25 03:50:24,734 - opentelemetry.trace - WARNING - Overriding of current TracerProvider is not allowed
+2025-10-25 03:50:25,114 - neonatal_monitor - INFO -    Real-time audio: wss://audiofeature-d4yyp515.livekit.cloud
+2025-10-25 03:50:25,541 - neonatal_monitor - INFO -    Emergency alerts: ACTIVE

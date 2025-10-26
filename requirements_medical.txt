@@ -1,0 +1,30 @@
+# Core web framework
+flask
+flask-cors
+requests
+python-dotenv
+openai
+
+# Medical audio processing
+librosa>=0.10.0
+scipy>=1.10.0
+numpy>=1.24.0
+webrtcvad>=2.0.10
+soundfile>=0.12.0
+
+# Real-time audio processing
+pyaudio>=0.2.11
+sounddevice>=0.4.6
+
+# Medical data analysis
+scikit-learn>=1.3.0
+pandas>=2.0.0
+
+# Existing integrations
+arize-phoenix
+arize-phoenix-otel
+livekit-api
+
+# Medical monitoring
+psutil>=5.9.0
+matplotlib>=3.7.0  # For waveform visualization
