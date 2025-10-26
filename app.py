@@ -672,7 +672,8 @@ def analyze_medical_audio():
         real_time = data.get('real_time', False)
         sample_rate = data.get('sample_rate', 44100)  # Get sample rate from client
         
-        if real_time and audio_data:
+        # Only process real-time if we have meaningful audio data
+        if real_time and audio_data and len(audio_data) > 100:
             # Process real-time audio data from actual child
             try:
                 # Convert audio data to numpy array with proper dtype
