@@ -140,29 +140,48 @@ if 'api_status' not in st.session_state or not st.session_state.api_status:
 def preprocess_image(image):
     """Preprocess image: auto-white-balance, gamma correction, MSRCR"""
     try:
+        # Make a copy to avoid modifying the original
+        processed = image.copy()
+        
         # Auto-white-balance using gray world
-        gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+        gray = cv2.cvtColor(processed, cv2.COLOR_BGR2GRAY)
         gray_mean = np.mean(gray)
         
-        for channel in cv2.split(image):
-            channel_mean = np.mean(channel)
-            if channel_mean > 0:
-                image[:, :, list(cv2.split(image)).index(channel)] = channel * (gray_mean / channel_mean)
+        # Split channels and apply white balance
+        b, g, r = cv2.split(processed)
+        
+        b_mean = np.mean(b)
+        g_mean = np.mean(g)
+        r_mean = np.mean(r)
+        
+        # Apply gray world assumption
+        if b_mean > 0:
+            b = b * (gray_mean / b_mean)
+        if g_mean > 0:
+            g = g * (gray_mean / g_mean)
+        if r_mean > 0:
+            r = r * (gray_mean / r_mean)
+        
+        # Merge channels back
+        processed = cv2.merge([b, g, r])
+        
+        # Clip values to valid range
+        processed = np.clip(processed, 0, 255).astype(np.uint8)
         
         # Gamma correction
         gamma = 1.2
         lookup = np.array([((i / 255.0) ** (1.0 / gamma)) * 255 for i in np.arange(0, 256)]).astype("uint8")
-        image = cv2.LUT(image, lookup)
+        processed = cv2.LUT(processed, lookup)
         
         # Simple MSRCR (Multi-Scale Retinex with Color Restoration) - simplified
-        image_float = image.astype(np.float32) / 255.0
+        image_float = processed.astype(np.float32) / 255.0
         intensity = np.mean(image_float, axis=2)
         
         # Simulate MSRCR with tone mapping
         enhanced = image_float + 0.1 * (intensity[:, :, np.newaxis] - image_float)
-        image = np.clip(enhanced * 255, 0, 255).astype(np.uint8)
+        processed = np.clip(enhanced * 255, 0, 255).astype(np.uint8)
         
-        return image
+        return processed
     except Exception as e:
         logger.warning(f"Image preprocessing failed: {e}")
         return image
@@ -327,6 +346,165 @@ def calculate_final_ror(image_probabilities, vitals_risk):
     except Exception as e:
         logger.error(f"Final RoR calculation failed: {e}")
         return 0
+
+def generate_medical_advice(color_stats, image_probs, vitals=None, final_ror=None):
+    """Generate medical advice based on analysis results"""
+    advice_items = []
+    
+    # Analyze jaundice
+    if image_probs.get('jaundice', 0) > 50:
+        advice_items.append({
+            'condition': 'Jaundice',
+            'priority': 'high',
+            'advice': [
+                "Monitor bilirubin levels closely",
+                "Ensure adequate feeding (breastfeeding or formula every 2-3 hours)",
+                "Expose to indirect sunlight if recommended by healthcare provider",
+                "Consider phototherapy if bilirubin levels are rising",
+                "Watch for signs of lethargy, poor feeding, or arching of the back"
+            ]
+        })
+    elif image_probs.get('jaundice', 0) > 20:
+        advice_items.append({
+            'condition': 'Mild Jaundice',
+            'priority': 'medium',
+            'advice': [
+                "Continue monitoring skin color",
+                "Ensure frequent feeding to help clear bilirubin",
+                "Monitor for worsening symptoms",
+                "Consult healthcare provider if yellowing increases"
+            ]
+        })
+    
+    # Analyze cyanosis
+    if image_probs.get('cyanosis', 0) > 50:
+        advice_items.append({
+            'condition': 'Cyanosis',
+            'priority': 'critical',
+            'advice': [
+                "🚨 SEEK IMMEDIATE MEDICAL ATTENTION",
+                "Check oxygen saturation immediately",
+                "Ensure clear airway - check for obstruction",
+                "Administer oxygen if available and trained to do so",
+                "Monitor respiratory rate and effort",
+                "Prepare for potential CPR if breathing stops"
+            ]
+        })
+    elif image_probs.get('cyanosis', 0) > 20:
+        advice_items.append({
+            'condition': 'Possible Cyanosis',
+            'priority': 'high',
+            'advice': [
+                "Monitor breathing and oxygen levels closely",
+                "Check for signs of respiratory distress",
+                "Ensure proper positioning to maintain airway",
+                "Seek medical evaluation if not improving"
+            ]
+        })
+    
+    # Analyze pallor
+    if image_probs.get('pallor', 0) > 50:
+        advice_items.append({
+            'condition': 'Pallor/Asphyxia',
+            'priority': 'critical',
+            'advice': [
+                "🚨 IMMEDIATE MEDICAL ATTENTION REQUIRED",
+                "Check for responsiveness and breathing",
+                "If not breathing, begin CPR immediately",
+                "Call emergency services",
+                "Keep baby warm",
+                "Check for signs of circulation"
+            ]
+        })
+    elif image_probs.get('pallor', 0) > 20:
+        advice_items.append({
+            'condition': 'Possible Pallor',
+            'priority': 'high',
+            'advice': [
+                "Monitor closely for changes in condition",
+                "Check temperature and ensure baby is warm",
+                "Assess feeding and responsiveness",
+                "Seek immediate evaluation if baby becomes unresponsive"
+            ]
+        })
+    
+    # General advice if no major concerns
+    if not advice_items:
+        advice_items.append({
+            'condition': 'Normal Appearance',
+            'priority': 'low',
+            'advice': [
+                "Continue routine monitoring",
+                "Monitor feeding, sleeping, and breathing patterns",
+                "Watch for any changes in skin color",
+                "Maintain regular check-ups with healthcare provider"
+            ]
+        })
+    
+    # Add vitals-based advice if provided
+    if vitals:
+        vitals_advice = []
+        
+        # Respiratory rate
+        rr = vitals.get('respiratory_rate', 30)
+        if rr < 20 or rr > 80:
+            vitals_advice.append("⚠️ Abnormal respiratory rate - seek immediate medical attention")
+        elif rr < 30 or rr > 60:
+            vitals_advice.append("Monitor breathing patterns closely")
+        
+        # Heart rate
+        hr = vitals.get('heart_rate', 120)
+        if hr < 60 or hr > 200:
+            vitals_advice.append("⚠️ Abnormal heart rate - seek medical attention")
+        elif hr < 100 or hr > 160:
+            vitals_advice.append("Monitor heart rate periodically")
+        
+        # SpO2
+        spo2 = vitals.get('spo2', 95)
+        if spo2 < 85:
+            vitals_advice.append("🚨 CRITICAL: Low oxygen saturation - seek immediate medical attention")
+        elif spo2 < 90:
+            vitals_advice.append("⚠️ Low oxygen saturation - monitor closely")
+        
+        # Temperature
+        temp = vitals.get('temperature', 37.0)
+        if temp < 36.0 or temp > 38.0:
+            vitals_advice.append("⚠️ Abnormal temperature - check for signs of infection or hypothermia")
+        
+        if vitals_advice:
+            advice_items.insert(0, {
+                'condition': 'Vital Signs',
+                'priority': 'high',
+                'advice': vitals_advice
+            })
+    
+    # Add overall RoR recommendation
+    if final_ror is not None:
+        if final_ror >= 60:
+            overall_advice = {
+                'condition': 'High Risk Assessment',
+                'priority': 'critical',
+                'advice': [
+                    "🚨 HIGH RISK - Seek immediate medical evaluation",
+                    "Do not delay seeking medical attention",
+                    "Monitor continuously until medical help arrives",
+                    "Prepare emergency contact information"
+                ]
+            }
+            advice_items.insert(0, overall_advice)
+        elif final_ror >= 30:
+            overall_advice = {
+                'condition': 'Moderate Risk Assessment',
+                'priority': 'medium',
+                'advice': [
+                    "Monitor baby closely for any changes",
+                    "Consider consulting healthcare provider within 24 hours",
+                    "Be prepared to seek immediate care if symptoms worsen"
+                ]
+            }
+            advice_items.insert(0, overall_advice)
+    
+    return advice_items
 
 # ============================================================================
 # AUDIO PROCESSING HELPERS
@@ -510,8 +688,22 @@ def image_vitals_analysis():
                     st.image(processed_image, caption="Preprocessed Image", use_container_width=True)
                     
                     # Create overlay mask for display
-                    mask_display = cv2.cvtColor(mask, cv2.COLOR_GRAY2RGB) if len(mask.shape) == 2 else mask
-                    overlay = cv2.addWeighted(image, 0.7, mask_display * 0.3, 0.3, 0)
+                    if len(mask.shape) == 2:
+                        mask_display = cv2.cvtColor(mask, cv2.COLOR_GRAY2RGB)
+                    else:
+                        mask_display = mask.copy()
+                    
+                    # Ensure mask_display is the same shape and dtype as image
+                    if mask_display.shape != image.shape:
+                        mask_display = cv2.resize(mask_display, (image.shape[1], image.shape[0]))
+                    
+                    # Normalize mask to 0-255 range and ensure uint8 dtype
+                    mask_normalized = (mask_display.astype(np.float32) * 0.3).astype(np.uint8)
+                    
+                    # Create overlay with proper type handling
+                    overlay = cv2.addWeighted(image.astype(np.float32), 0.7, 
+                                             mask_normalized.astype(np.float32), 0.3, 0).astype(np.uint8)
+                    
                     st.image(overlay, caption="Skin Overlay", use_container_width=True)
                     
                     # Display color statistics
@@ -548,6 +740,39 @@ def image_vitals_analysis():
                         'cyanosis': cyanosis_prob,
                         'pallor': pallor_prob
                     }
+                    
+                    # Generate and display medical advice
+                    st.subheader("💡 Medical Advice & Recommendations")
+                    
+                    # Generate advice based on image analysis
+                    advice_items = generate_medical_advice(
+                        color_stats, 
+                        st.session_state.image_probs
+                    )
+                    
+                    # Display each advice item
+                    for item in advice_items:
+                        priority = item.get('priority', 'low')
+                        condition = item.get('condition', 'Unknown')
+                        advice_list = item.get('advice', [])
+                        
+                        # Choose display style based on priority
+                        if priority == 'critical':
+                            with st.expander(f"🚨 {condition} - CRITICAL", expanded=True):
+                                for adv in advice_list:
+                                    st.write(f"• {adv}")
+                        elif priority == 'high':
+                            with st.expander(f"⚠️ {condition} - HIGH PRIORITY", expanded=True):
+                                for adv in advice_list:
+                                    st.write(f"• {adv}")
+                        elif priority == 'medium':
+                            with st.expander(f"📋 {condition} - MONITOR"):
+                                for adv in advice_list:
+                                    st.write(f"• {adv}")
+                        else:
+                            with st.expander(f"✅ {condition}"):
+                                for adv in advice_list:
+                                    st.write(f"• {adv}")
                 else:
                     st.error("Could not isolate skin region")
             else:
@@ -623,6 +848,45 @@ def image_vitals_analysis():
                 else:
                     st.success(f"✅ LOW RoR ({final_ror:.0f}/100) - Continue routine monitoring")
                 
+                # Generate comprehensive medical advice based on vitals and image analysis
+                st.markdown("---")
+                st.subheader("💡 Comprehensive Medical Advice")
+                
+                # Prepare image probabilities if available
+                image_probs = st.session_state.image_probs if 'image_probs' in st.session_state else {}
+                
+                # Generate comprehensive advice
+                comprehensive_advice = generate_medical_advice(
+                    color_stats={},
+                    image_probs=image_probs,
+                    vitals=vitals,
+                    final_ror=final_ror
+                )
+                
+                # Display each advice item
+                for item in comprehensive_advice:
+                    priority = item.get('priority', 'low')
+                    condition = item.get('condition', 'Unknown')
+                    advice_list = item.get('advice', [])
+                    
+                    # Choose display style based on priority
+                    if priority == 'critical':
+                        with st.expander(f"🚨 {condition} - CRITICAL", expanded=True):
+                            for adv in advice_list:
+                                st.write(f"• {adv}")
+                    elif priority == 'high':
+                        with st.expander(f"⚠️ {condition} - HIGH PRIORITY", expanded=True):
+                            for adv in advice_list:
+                                st.write(f"• {adv}")
+                    elif priority == 'medium':
+                        with st.expander(f"📋 {condition} - MONITOR"):
+                            for adv in advice_list:
+                                st.write(f"• {adv}")
+                    else:
+                        with st.expander(f"✅ {condition}"):
+                            for adv in advice_list:
+                                st.write(f"• {adv}")
+                
                 # Download report
                 report = {
                     'timestamp': datetime.now().isoformat(),
@@ -630,7 +894,8 @@ def image_vitals_analysis():
                     'vitals_risk': vitals_risk,
                     'image_probabilities': st.session_state.image_probs if 'image_probs' in st.session_state else {},
                     'ror_score': final_ror,
-                    'ror_level': ror_level
+                    'ror_level': ror_level,
+                    'medical_advice': comprehensive_advice
                 }
                 
                 st.download_button(
