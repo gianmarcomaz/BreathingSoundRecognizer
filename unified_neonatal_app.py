@@ -682,13 +682,13 @@ def breathing_sound_recognition():
         
         # Generate and display test cases
         for condition_key, info in diagnostics.items():
-            # Container for each diagnostic group
+            # Container for each diagnostic group - refined layout
             with st.container():
-                # Create columns for button and info button with better spacing
-                btn_col, info_col = st.columns([6, 1])
+                # Create columns for button and info button
+                btn_col, info_col = st.columns([7, 1])
                 
                 with btn_col:
-                    if st.button(f"{info['icon']} {info['name']}", key=f"test_{condition_key}", use_container_width=True):
+                    if st.button(f"{info['icon']} {info['name']}", key=f"test_{condition_key}", use_container_width=True, type="primary"):
                         with st.spinner(f"Generating {info['name']} audio..."):
                             # Generate audio
                             audio = generate_synthetic_audio(duration=3.0, condition=condition_key)
@@ -701,10 +701,11 @@ def breathing_sound_recognition():
                             st.rerun()
                 
                 with info_col:
-                    if st.button("ℹ️", key=f"info_{condition_key}", use_container_width=True):
+                    if st.button("ℹ️", key=f"info_{condition_key}", type="secondary"):
                         st.session_state[f'show_info_{condition_key}'] = True
                 
-                st.markdown("<br>", unsafe_allow_html=True)
+                # Subtle spacing
+                st.markdown("<div style='height: 0.75rem;'></div>", unsafe_allow_html=True)
             
             # Show info popup
             if st.session_state.get(f'show_info_{condition_key}', False):
@@ -1022,153 +1023,202 @@ def image_vitals_analysis():
 # ============================================================================
 
 def main():
-    # Custom CSS for improved aesthetics and proportions
+    # Minimalist, Elegant, Professional CSS
     st.markdown("""
     <style>
-    /* Overall theme improvements */
+    /* Clean, minimalist background */
     .stApp {
-        background: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 100%);
+        background: #0f1117;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
     }
     
-    /* Metrics styling */
+    /* Minimalist metrics - refined and proportional */
     .stMetric {
-        background: linear-gradient(135deg, #1e1e2e 0%, #252539 100%);
-        padding: 1.2rem;
-        border-radius: 0.75rem;
-        border: 2px solid #00ff88;
-        box-shadow: 0 4px 6px rgba(0, 255, 136, 0.1);
-        transition: all 0.3s ease;
+        background: rgba(255, 255, 255, 0.03);
+        padding: 0.85rem 1rem;
+        border-radius: 8px;
+        border: 1px solid rgba(0, 255, 136, 0.15);
+        transition: all 0.2s ease;
     }
     
     .stMetric:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 6px 12px rgba(0, 255, 136, 0.2);
+        background: rgba(255, 255, 255, 0.05);
+        border-color: rgba(0, 255, 136, 0.25);
     }
     
-    /* Main header */
+    .stMetric > div > div {
+        font-size: 1rem;
+    }
+    
+    /* Elegant header - more subtle */
     .main-header {
-        background: linear-gradient(135deg, #16213e 0%, #0f3460 100%);
-        padding: 2.5rem;
-        border-radius: 1.2rem;
-        margin-bottom: 2.5rem;
-        border: 3px solid #00ff88;
-        box-shadow: 0 8px 16px rgba(0, 255, 136, 0.15);
+        background: rgba(255, 255, 255, 0.02);
+        padding: 2rem 1.5rem;
+        border-radius: 12px;
+        margin-bottom: 2rem;
+        border: 1px solid rgba(0, 255, 136, 0.12);
+        backdrop-filter: blur(10px);
     }
     
-    /* Button improvements */
+    /* Refined buttons - elegant and proportional */
     .stButton > button {
         width: 100%;
-        padding: 0.75rem 1.5rem;
-        border-radius: 0.5rem;
-        font-weight: 600;
-        border: none;
-        background: linear-gradient(135deg, #00ff88 0%, #00cc70 100%);
-        color: #0a0e27;
-        transition: all 0.3s ease;
-        box-shadow: 0 2px 4px rgba(0, 255, 136, 0.3);
+        padding: 0.6rem 1.2rem;
+        border-radius: 8px;
+        font-weight: 500;
+        font-size: 0.9rem;
+        border: 1px solid rgba(0, 255, 136, 0.3);
+        background: rgba(0, 255, 136, 0.1);
+        color: #00ff88;
+        transition: all 0.25s ease;
+        box-shadow: none;
     }
     
     .stButton > button:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 4px 8px rgba(0, 255, 136, 0.4);
-        background: linear-gradient(135deg, #00ffaa 0%, #00ff88 100%);
+        background: rgba(0, 255, 136, 0.15);
+        border-color: rgba(0, 255, 136, 0.4);
+        transform: none;
     }
     
-    /* Improve info button specifically */
-    .stButton > button:has-text("ℹ️") {
-        padding: 0.5rem 0.75rem;
-        font-size: 1.2rem;
+    /* Specific styling for info buttons */
+    button[kind="secondary"] {
+        padding: 0.4rem 0.6rem !important;
+        min-width: auto !important;
+        font-size: 1rem !important;
+        background: rgba(147, 51, 234, 0.1) !important;
+        border: 1px solid rgba(147, 51, 234, 0.3) !important;
+        color: #a855f7 !important;
     }
     
-    /* Diagnostic button styling */
-    [data-testid="stButton"] button {
-        min-height: 3rem;
-        font-size: 0.95rem;
+    button[kind="secondary"]:hover {
+        background: rgba(147, 51, 234, 0.15) !important;
+        border-color: rgba(147, 51, 234, 0.4) !important;
     }
     
-    /* Sidebar improvements */
+    /* Sidebar refinement */
     [data-testid="stSidebar"] {
-        background: linear-gradient(180deg, #1a1f3a 0%, #16213e 100%);
+        background: #0a0c14;
+        border-right: 1px solid rgba(255, 255, 255, 0.05);
     }
     
-    /* Expander styling */
+    /* Clean expander headers */
     .streamlit-expanderHeader {
-        background: linear-gradient(135deg, #2a2f4a 0%, #1e2439 100%);
-        border-radius: 0.5rem;
-        border: 1px solid #00ff88;
-        padding: 1rem;
-        font-weight: 600;
+        background: rgba(255, 255, 255, 0.02);
+        border-radius: 8px;
+        border: 1px solid rgba(0, 255, 136, 0.1);
+        padding: 0.75rem 1rem;
+        font-weight: 500;
+        font-size: 0.9rem;
     }
     
-    /* Audio player styling */
+    /* Audio player - minimal */
     audio {
         width: 100%;
-        margin: 0.5rem 0;
-        border-radius: 0.5rem;
+        margin: 0.75rem 0;
+        border-radius: 6px;
+        opacity: 0.9;
     }
     
-    /* Caption improvements */
-    .caption {
-        font-size: 0.85rem;
-        color: #b0b0b0;
-        margin-top: 0.5rem;
+    /* Typography - clean and readable */
+    h1 {
+        font-size: 1.75rem;
+        font-weight: 600;
+        color: #00ff88;
+        margin: 0;
     }
     
-    /* Subheader improvements */
     h2 {
-        border-bottom: 2px solid #00ff88;
+        font-size: 1.25rem;
+        font-weight: 500;
+        color: #e4e4e7;
+        margin-top: 1.5rem;
+        margin-bottom: 0.75rem;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         padding-bottom: 0.5rem;
-        margin-bottom: 1rem;
     }
     
     h3 {
-        margin-top: 1.5rem;
-        margin-bottom: 1rem;
-        color: #00ff88;
+        font-size: 1rem;
+        font-weight: 500;
+        color: #a1a1aa;
+        margin-top: 1rem;
+        margin-bottom: 0.5rem;
     }
     
-    /* Input field styling */
-    .stNumberInput > div > div > input {
-        background: #1e1e2e;
-        border: 1px solid #00ff88;
-        border-radius: 0.5rem;
-        color: white;
+    /* Input fields - refined */
+    .stNumberInput > div > div > input,
+    .stSelectbox > div > div > select,
+    .stTextInput > div > div > input {
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 6px;
+        color: #e4e4e7;
+        padding: 0.5rem 0.75rem;
     }
     
-    .stSelectbox > div > div > select {
-        background: #1e1e2e;
-        border: 1px solid #00ff88;
-        border-radius: 0.5rem;
-        color: white;
+    .stNumberInput > div > div > input:focus,
+    .stSelectbox > div > div > select:focus {
+        border-color: rgba(0, 255, 136, 0.3);
+        box-shadow: 0 0 0 2px rgba(0, 255, 136, 0.1);
     }
     
-    /* Improve spacing in diagnostic test cases */
-    .diagnostic-group {
-        margin-bottom: 1rem;
-        padding: 1rem;
-        background: rgba(30, 30, 46, 0.5);
-        border-radius: 0.75rem;
-        border: 1px solid rgba(0, 255, 136, 0.2);
-    }
-    
-    /* Alert messages */
+    /* Alert messages - subtle */
     .stAlert {
-        border-radius: 0.5rem;
-        border-left: 4px solid #00ff88;
+        border-radius: 8px;
+        border: 1px solid currentColor;
+        border-left: 3px solid currentColor;
+        background: rgba(255, 255, 255, 0.02);
     }
     
-    /* Better column spacing */
+    /* Column spacing - more balanced */
     .stColumns {
-        gap: 1.5rem;
+        gap: 1rem;
+    }
+    
+    /* Radio buttons - clean */
+    .stRadio > label {
+        font-size: 0.9rem;
+        color: #e4e4e7;
+    }
+    
+    /* Caption text - subtle */
+    .caption, .small {
+        font-size: 0.8rem;
+        color: #71717a;
+        font-weight: 400;
+    }
+    
+    /* Remove excessive borders on elements */
+    .element-container {
+        border: none !important;
+    }
+    
+    /* Scrollbar styling - hidden but functional */
+    ::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+    }
+    
+    ::-webkit-scrollbar-track {
+        background: rgba(255, 255, 255, 0.02);
+    }
+    
+    ::-webkit-scrollbar-thumb {
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 3px;
+    }
+    
+    ::-webkit-scrollbar-thumb:hover {
+        background: rgba(255, 255, 255, 0.15);
     }
     </style>
     """, unsafe_allow_html=True)
     
-    # Header
+    # Header - Minimalist and elegant
     st.markdown("""
     <div class="main-header">
-        <h1 style="color: #00ff88; text-align: center; margin: 0;">🏥 Unified Neonatal Monitoring</h1>
-        <p style="color: white; text-align: center; margin-top: 0.5rem;">Breathing Sound Recognition • Image & Vitals Analysis</p>
+        <h1 style="color: #00ff88; text-align: center; margin: 0; font-size: 1.75rem; font-weight: 600; letter-spacing: -0.02em;">Unified Neonatal Monitoring</h1>
+        <p style="color: #a1a1aa; text-align: center; margin-top: 0.75rem; font-size: 0.85rem; font-weight: 400; letter-spacing: 0.01em;">Breathing Sound Recognition • Image & Vitals Analysis</p>
     </div>
     """, unsafe_allow_html=True)
     
