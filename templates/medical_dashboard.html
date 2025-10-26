@@ -558,14 +558,14 @@
         
         function initializeAudioCapture() {
             try {
-                // Request microphone access with noise suppression for hackathon environment
+                // Request microphone access
                 navigator.mediaDevices.getUserMedia({ 
                     audio: {
                         sampleRate: 44100,
                         channelCount: 1,
-                        echoCancellation: true,
-                        noiseSuppression: true,
-                        autoGainControl: true
+                        echoCancellation: false,
+                        noiseSuppression: false,
+                        autoGainControl: false
                     } 
                 })
                 .then(stream => {
@@ -579,7 +579,7 @@
                     // Create analyzer for real-time audio processing
                     const analyzer = audioContext.createAnalyser();
                     analyzer.fftSize = 2048;
-                    analyzer.smoothingTimeConstant = 0.0; // no temporal smear for PCM pulls
+                    analyzer.smoothingTimeConstant = 0.8;
                     
                     microphone.connect(analyzer);
                     
@@ -601,71 +601,37 @@
         }
         
         function startRealTimeAudioAnalysis(analyzer) {
-            // Use time-domain PCM, not frequency bins
-            const fftSize = 2048;
-            analyzer.fftSize = fftSize;
-
-            const chunk = new Float32Array(analyzer.fftSize);
-            const sr = audioContext.sampleRate;         // may be 44100 or 48000
-            const targetWindowSec = 1.5;                // ~1.5s window for breath envelope
-            const windowSamples = Math.floor(sr * targetWindowSec);
-            let ring = new Float32Array(windowSamples);
-            let ringWrite = 0;
-
-            function pushSamples(buf) {
-                const n = buf.length;
-                if (n >= windowSamples) {
-                    // take last windowSamples if a huge chunk arrives
-                    ring.set(buf.subarray(n - windowSamples));
-                    ringWrite = 0;
-                    return;
-                }
-                const toEnd = windowSamples - ringWrite;
-                if (n <= toEnd) {
-                    ring.set(buf, ringWrite);
-                    ringWrite += n;
-                    if (ringWrite === windowSamples) ringWrite = 0;
-                } else {
-                    ring.set(buf.subarray(0, toEnd), ringWrite);
-                    ring.set(buf.subarray(toEnd), 0);
-                    ringWrite = (n - toEnd);
-                }
-            }
-
-            let lastSend = 0;
-            const minSendMs = 1200; // throttle network load
-
-            function loop() {
+            const bufferLength = analyzer.frequencyBinCount;
+            const dataArray = new Uint8Array(bufferLength);
+            let lastAnalysisTime = 0;
+            const analysisInterval = 2000; // Analyze every 2 seconds to prevent overload
+            
+            function analyzeAudio() {
                 if (!monitoringActive) return;
-
-                analyzer.getFloatTimeDomainData(chunk);
-                pushSamples(chunk);
-
-                const now = performance.now();
-                if (now - lastSend >= minSendMs) {
-                    // Reconstruct window in order
-                    const ordered = new Float32Array(windowSamples);
-                    ordered.set(ring.subarray(ringWrite));
-                    ordered.set(ring.subarray(0, ringWrite), windowSamples - ringWrite);
-
-                    // Convert to plain array for JSON
-                    const payload = Array.from(ordered);
-
-                    sendAudioForAnalysis(payload, sr);
-                    lastSend = now;
+                
+                const currentTime = Date.now();
+                
+                // Only analyze if enough time has passed
+                if (currentTime - lastAnalysisTime >= analysisInterval) {
+                    analyzer.getByteFrequencyData(dataArray);
+                    
+                    // Convert to audio data for analysis
+                    const audioData = Array.from(dataArray).map(x => (x - 128) / 128);
+                    
+                    // Send audio data for analysis
+                    sendAudioForAnalysis(audioData);
+                    
+                    lastAnalysisTime = currentTime;
                 }
-
-                requestAnimationFrame(loop);
+                
+                // Continue analysis with throttling
+                requestAnimationFrame(analyzeAudio);
             }
-
-            loop();
+            
+            analyzeAudio();
         }
         
-        function sendAudioForAnalysis(audioData, sampleRate) {
-            // Ensure audioData is a regular array (not Float32Array or other typed array)
-            // This prevents JSON.stringify from creating {"0":0.1,"1":0.2,...} objects
-            const safeAudioArray = audioData instanceof Array ? audioData : Array.from(audioData);
-            
+        function sendAudioForAnalysis(audioData) {
             // Send audio data to backend for analysis with error handling
             fetch('/analyze_audio', {
                 method: 'POST',
@@ -673,23 +639,26 @@
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    real_time: true,
-                    sample_rate: sampleRate || 44100,  // Use actual AudioContext rate
-                    audio_data: safeAudioArray,
-                    golden_minute: true
+                    audio_data: audioData,
+                    sample_rate: 44100,
+                    real_time: true
                 })
             })
-            .then(r => r.json())
-            .then(data => {
-                if (data.ok === false) {
-                    // graceful soft-fail – keep running
-                    return;
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
                 }
+                return response.json();
+            })
+            .then(data => {
                 updateDisplayWithData(data);
             })
-            .catch(err => {
-                // keep it quiet; the backend never 500s now
-                console.warn('analyze_audio error', err);
+            .catch(error => {
+                console.error('Real-time audio analysis error:', error);
+                // Don't spam the console with too many error messages
+                if (Math.random() < 0.1) { // Only log 10% of errors
+                    showErrorNotification('Audio analysis temporarily unavailable');
+                }
             });
         }
         
@@ -790,7 +759,7 @@
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    real_time: false  // Use synthetic/test mode
+                    real_time: false
                 })
             })
             .then(response => {
@@ -800,12 +769,6 @@
                 return response.json();
             })
             .then(data => {
-                // Handle ok: false responses gracefully - just skip this update, keep polling
-                if (data.ok === false) {
-                    console.debug('Audio chunk not ready yet:', data.error);
-                    return; // Don't update display, just continue polling
-                }
-                // Only update display when ok: true
                 updateDisplayWithData(data);
             })
             .catch(error => {
@@ -878,6 +841,21 @@
                 // Show enhanced analysis info
                 if (data.real_time_analysis) {
                     showNotification(`🔴 Real-time analysis active - Signal: ${data.signal_quality || 'unknown'}`, 'info');
+                }
+                
+                // Show helpful feedback when breathing isn't detected
+                if (data.breathing_rate === 0 && data.real_time_analysis) {
+                    const existingMsg = document.getElementById('noBreathingMsg');
+                    if (!existingMsg) {
+                        const msgDiv = document.createElement('div');
+                        msgDiv.id = 'noBreathingMsg';
+                        msgDiv.style.cssText = 'background: linear-gradient(90deg, #ffa500, #ff8c00); padding: 12px; margin: 10px 0; border-radius: 6px; color: #fff; font-size: 0.95rem; text-align: center; animation: pulse 2s infinite;';
+                        msgDiv.innerHTML = '⚠️ <strong>No breathing detected.</strong> Please ensure:<br>1) Low background noise<br>2) Steady breathing near mic (3-5cm away)<br>3) Or use synthetic test mode';
+                        document.querySelector('.vital-signs').appendChild(msgDiv);
+                    }
+                } else {
+                    const noBreathingMsg = document.getElementById('noBreathingMsg');
+                    if (noBreathingMsg) noBreathingMsg.remove();
                 }
                 
                 // Update cry quality display if available
