@@ -772,8 +772,7 @@ def analyze_medical_audio():
                 test_audio, metadata = medical_datasets.generate_medical_audio(condition, severity, 2.0)
         else:
             # Generate synthetic demo data for realistic infant breathing (40-50 bpm)
-            import numpy as np
-            from datetime import datetime
+            # numpy is already imported at module level
             duration = 2.0
             sample_rate_local = 44100
             t = np.linspace(0, duration, int(sample_rate_local * duration))
