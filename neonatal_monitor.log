@@ -5,3 +5,473 @@
 2025-10-25 03:50:24,734 - opentelemetry.trace - WARNING - Overriding of current TracerProvider is not allowed
 2025-10-25 03:50:25,114 - neonatal_monitor - INFO -    Real-time audio: wss://audiofeature-d4yyp515.livekit.cloud
 2025-10-25 03:50:25,541 - neonatal_monitor - INFO -    Emergency alerts: ACTIVE
+2025-10-26 04:32:57,430 - __main__ - INFO -    Sample Rate: 44100 Hz
+2025-10-26 04:32:57,430 - __main__ - INFO -    Buffer Size: 1024 samples
+2025-10-26 04:32:57,430 - __main__ - INFO -    Analysis Window: 2.0s
+2025-10-26 04:32:57,430 - __main__ - INFO -    Target Latency: <100ms
+2025-10-26 04:32:57,448 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://10.72.6.185:5000
+2025-10-26 04:32:57,448 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-10-26 04:32:57,449 - werkzeug - INFO -  * Restarting with stat
+2025-10-26 04:33:05,956 - __main__ - INFO -    Sample Rate: 44100 Hz
+2025-10-26 04:33:05,956 - __main__ - INFO -    Buffer Size: 1024 samples
+2025-10-26 04:33:05,956 - __main__ - INFO -    Analysis Window: 2.0s
+2025-10-26 04:33:05,956 - __main__ - INFO -    Target Latency: <100ms
+2025-10-26 04:33:05,966 - werkzeug - WARNING -  * Debugger is active!
+2025-10-26 04:33:05,972 - werkzeug - INFO -  * Debugger PIN: 138-653-694
+2025-10-26 04:38:09,941 - werkzeug - INFO - 127.0.0.1 - - [26/Oct/2025 04:38:09] "POST /analyze_audio HTTP/1.1" 200 -
+2025-10-26 04:40:09,982 - werkzeug - INFO - 127.0.0.1 - - [26/Oct/2025 04:40:09] "GET / HTTP/1.1" 200 -
+2025-10-26 04:40:16,437 - werkzeug - INFO - 127.0.0.1 - - [26/Oct/2025 04:40:16] "[33mGET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1[0m" 404 -
+2025-10-26 04:40:19,893 - werkzeug - INFO - 127.0.0.1 - - [26/Oct/2025 04:40:19] "POST /start_monitoring HTTP/1.1" 200 -
+2025-10-26 04:40:24,429 - __main__ - ERROR - Phoenix medical logging failed: can't subtract offset-naive and offset-aware datetimes
+2025-10-26 04:40:24,436 - __main__ - CRITICAL -    Breathing: 0.0 bpm (absent)
+2025-10-26 04:40:24,436 - __main__ - CRITICAL -    Distress Score: 0.85
+2025-10-26 04:40:24,436 - __main__ - CRITICAL -    O2 Estimate: 75.0%
+2025-10-26 04:40:24,436 - __main__ - ERROR - Emergency alert trigger failed: can't subtract offset-naive and offset-aware datetimes
+2025-10-26 04:40:24,440 - werkzeug - INFO - 127.0.0.1 - - [26/Oct/2025 04:40:24] "POST /analyze_audio HTTP/1.1" 200 -
+2025-10-26 04:40:25,230 - werkzeug - INFO - 127.0.0.1 - - [26/Oct/2025 04:40:25] "GET /get_alerts HTTP/1.1" 200 -
+2025-10-26 04:40:25,307 - __main__ - ERROR - Phoenix medical logging failed: can't subtract offset-naive and offset-aware datetimes
+2025-10-26 04:40:25,312 - werkzeug - INFO - 127.0.0.1 - - [26/Oct/2025 04:40:25] "POST /analyze_audio HTTP/1.1" 200 -
+2025-10-26 04:40:25,766 - __main__ - ERROR - Phoenix medical logging failed: can't subtract offset-naive and offset-aware datetimes
+2025-10-26 04:40:25,769 - __main__ - CRITICAL -    Breathing: 0.0 bpm (absent)
+2025-10-26 04:40:25,769 - __main__ - CRITICAL -    Distress Score: 0.70
+2025-10-26 04:40:25,769 - __main__ - CRITICAL -    O2 Estimate: 80.0%
+2025-10-26 04:40:25,769 - __main__ - ERROR - Emergency alert trigger failed: can't subtract offset-naive and offset-aware datetimes
+2025-10-26 04:40:25,772 - werkzeug - INFO - 127.0.0.1 - - [26/Oct/2025 04:40:25] "POST /analyze_audio HTTP/1.1" 200 -
+2025-10-26 04:40:27,180 - __main__ - ERROR - Phoenix medical logging failed: can't subtract offset-naive and offset-aware datetimes
+2025-10-26 04:40:27,182 - __main__ - CRITICAL -    Breathing: 0.0 bpm (absent)
+2025-10-26 04:40:27,182 - __main__ - CRITICAL -    Distress Score: 0.85
+2025-10-26 04:40:27,183 - __main__ - CRITICAL -    O2 Estimate: 80.0%
+2025-10-26 04:40:27,183 - __main__ - ERROR - Emergency alert trigger failed: can't subtract offset-naive and offset-aware datetimes
+2025-10-26 04:40:27,187 - werkzeug - INFO - 127.0.0.1 - - [26/Oct/2025 04:40:27] "POST /analyze_audio HTTP/1.1" 200 -
+2025-10-26 04:40:28,063 - __main__ - ERROR - Phoenix medical logging failed: can't subtract offset-naive and offset-aware datetimes
+2025-10-26 04:40:28,067 - werkzeug - INFO - 127.0.0.1 - - [26/Oct/2025 04:40:28] "POST /analyze_audio HTTP/1.1" 200 -
+2025-10-26 04:40:29,624 - __main__ - ERROR - Phoenix medical logging failed: can't subtract offset-naive and offset-aware datetimes
+2025-10-26 04:40:29,627 - __main__ - CRITICAL -    Breathing: 101.7 bpm (irregular)
+2025-10-26 04:40:29,627 - __main__ - CRITICAL -    Distress Score: 0.50
+2025-10-26 04:40:29,627 - __main__ - CRITICAL -    O2 Estimate: 82.5%
+2025-10-26 04:40:29,627 - __main__ - ERROR - Emergency alert trigger failed: can't subtract offset-naive and offset-aware datetimes
+2025-10-26 04:40:29,629 - werkzeug - INFO - 127.0.0.1 - - [26/Oct/2025 04:40:29] "POST /analyze_audio HTTP/1.1" 200 -
+2025-10-26 04:40:29,929 - __main__ - ERROR - Phoenix medical logging failed: can't subtract offset-naive and offset-aware datetimes
+2025-10-26 04:40:29,942 - __main__ - CRITICAL -    Breathing: 104.1 bpm (irregular)
+2025-10-26 04:40:29,943 - __main__ - CRITICAL -    Distress Score: 0.50
+2025-10-26 04:40:29,943 - __main__ - CRITICAL -    O2 Estimate: 81.8%
+2025-10-26 04:40:29,943 - __main__ - ERROR - Emergency alert trigger failed: can't subtract offset-naive and offset-aware datetimes
+2025-10-26 04:40:29,946 - werkzeug - INFO - 127.0.0.1 - - [26/Oct/2025 04:40:29] "POST /analyze_audio HTTP/1.1" 200 -
+2025-10-26 04:40:30,209 - werkzeug - INFO - 127.0.0.1 - - [26/Oct/2025 04:40:30] "GET /get_alerts HTTP/1.1" 200 -
+2025-10-26 04:40:30,820 - __main__ - ERROR - Phoenix medical logging failed: can't subtract offset-naive and offset-aware datetimes
+2025-10-26 04:40:30,826 - werkzeug - INFO - 127.0.0.1 - - [26/Oct/2025 04:40:30] "POST /analyze_audio HTTP/1.1" 200 -
+2025-10-26 04:40:31,698 - __main__ - ERROR - Phoenix medical logging failed: can't subtract offset-naive and offset-aware datetimes
+2025-10-26 04:40:31,702 - werkzeug - INFO - 127.0.0.1 - - [26/Oct/2025 04:40:31] "POST /analyze_audio HTTP/1.1" 200 -
+2025-10-26 04:40:33,308 - __main__ - ERROR - Phoenix medical logging failed: can't subtract offset-naive and offset-aware datetimes
+2025-10-26 04:40:33,312 - werkzeug - INFO - 127.0.0.1 - - [26/Oct/2025 04:40:33] "POST /analyze_audio HTTP/1.1" 200 -
+2025-10-26 04:40:34,111 - __main__ - ERROR - Phoenix medical logging failed: can't subtract offset-naive and offset-aware datetimes
+2025-10-26 04:40:34,115 - werkzeug - INFO - 127.0.0.1 - - [26/Oct/2025 04:40:34] "POST /analyze_audio HTTP/1.1" 200 -
+2025-10-26 04:40:35,219 - werkzeug - INFO - 127.0.0.1 - - [26/Oct/2025 04:40:35] "GET /get_alerts HTTP/1.1" 200 -
+2025-10-26 04:40:35,247 - __main__ - ERROR - Phoenix medical logging failed: can't subtract offset-naive and offset-aware datetimes
+2025-10-26 04:40:35,250 - __main__ - CRITICAL -    Breathing: 111.3 bpm (irregular)
+2025-10-26 04:40:35,250 - __main__ - CRITICAL -    Distress Score: 0.50
+2025-10-26 04:40:35,251 - __main__ - CRITICAL -    O2 Estimate: 79.6%
+2025-10-26 04:40:35,251 - __main__ - ERROR - Emergency alert trigger failed: can't subtract offset-naive and offset-aware datetimes
+2025-10-26 04:40:35,254 - werkzeug - INFO - 127.0.0.1 - - [26/Oct/2025 04:40:35] "POST /analyze_audio HTTP/1.1" 200 -
+2025-10-26 04:40:35,582 - __main__ - ERROR - Phoenix medical logging failed: can't subtract offset-naive and offset-aware datetimes
+2025-10-26 04:40:35,587 - werkzeug - INFO - 127.0.0.1 - - [26/Oct/2025 04:40:35] "POST /analyze_audio HTTP/1.1" 200 -
+2025-10-26 04:40:36,562 - __main__ - ERROR - Phoenix medical logging failed: can't subtract offset-naive and offset-aware datetimes
+2025-10-26 04:40:36,566 - __main__ - CRITICAL -    Breathing: 0.0 bpm (absent)
+2025-10-26 04:40:36,566 - __main__ - CRITICAL -    Distress Score: 0.85
+2025-10-26 04:40:36,567 - __main__ - CRITICAL -    O2 Estimate: 80.0%
+2025-10-26 04:40:36,567 - __main__ - ERROR - Emergency alert trigger failed: can't subtract offset-naive and offset-aware datetimes
+2025-10-26 04:40:36,569 - werkzeug - INFO - 127.0.0.1 - - [26/Oct/2025 04:40:36] "POST /analyze_audio HTTP/1.1" 200 -
+2025-10-26 04:40:38,187 - __main__ - ERROR - Phoenix medical logging failed: can't subtract offset-naive and offset-aware datetimes
+2025-10-26 04:40:38,204 - werkzeug - INFO - 127.0.0.1 - - [26/Oct/2025 04:40:38] "POST /analyze_audio HTTP/1.1" 200 -
+2025-10-26 04:40:39,011 - __main__ - ERROR - Phoenix medical logging failed: can't subtract offset-naive and offset-aware datetimes
+2025-10-26 04:40:39,014 - __main__ - CRITICAL -    Breathing: 119.0 bpm (irregular)
+2025-10-26 04:40:39,014 - __main__ - CRITICAL -    Distress Score: 0.50
+2025-10-26 04:40:39,015 - __main__ - CRITICAL -    O2 Estimate: 77.3%
+2025-10-26 04:40:39,015 - __main__ - ERROR - Emergency alert trigger failed: can't subtract offset-naive and offset-aware datetimes
+2025-10-26 04:40:39,020 - werkzeug - INFO - 127.0.0.1 - - [26/Oct/2025 04:40:39] "POST /analyze_audio HTTP/1.1" 200 -
+2025-10-26 04:40:40,223 - werkzeug - INFO - 127.0.0.1 - - [26/Oct/2025 04:40:40] "GET /get_alerts HTTP/1.1" 200 -
+2025-10-26 04:40:40,271 - __main__ - ERROR - Phoenix medical logging failed: can't subtract offset-naive and offset-aware datetimes
+2025-10-26 04:40:40,275 - werkzeug - INFO - 127.0.0.1 - - [26/Oct/2025 04:40:40] "POST /analyze_audio HTTP/1.1" 200 -
+2025-10-26 04:40:40,434 - __main__ - ERROR - Phoenix medical logging failed: can't subtract offset-naive and offset-aware datetimes
+2025-10-26 04:40:40,438 - werkzeug - INFO - 127.0.0.1 - - [26/Oct/2025 04:40:40] "POST /analyze_audio HTTP/1.1" 200 -
+2025-10-26 04:40:41,455 - __main__ - ERROR - Phoenix medical logging failed: can't subtract offset-naive and offset-aware datetimes
+2025-10-26 04:40:41,463 - __main__ - CRITICAL -    Breathing: 117.4 bpm (irregular)
+2025-10-26 04:40:41,464 - __main__ - CRITICAL -    Distress Score: 0.35
+2025-10-26 04:40:41,464 - __main__ - CRITICAL -    O2 Estimate: 77.8%
+2025-10-26 04:40:41,467 - __main__ - ERROR - Emergency alert trigger failed: can't subtract offset-naive and offset-aware datetimes
+2025-10-26 04:40:41,480 - werkzeug - INFO - 127.0.0.1 - - [26/Oct/2025 04:40:41] "POST /analyze_audio HTTP/1.1" 200 -
+2025-10-26 04:40:42,941 - __main__ - ERROR - Phoenix medical logging failed: can't subtract offset-naive and offset-aware datetimes
+2025-10-26 04:40:42,944 - werkzeug - INFO - 127.0.0.1 - - [26/Oct/2025 04:40:42] "POST /analyze_audio HTTP/1.1" 200 -
+2025-10-26 04:40:43,738 - __main__ - ERROR - Phoenix medical logging failed: can't subtract offset-naive and offset-aware datetimes
+2025-10-26 04:40:43,742 - werkzeug - INFO - 127.0.0.1 - - [26/Oct/2025 04:40:43] "POST /analyze_audio HTTP/1.1" 200 -
+2025-10-26 04:40:45,246 - werkzeug - INFO - 127.0.0.1 - - [26/Oct/2025 04:40:45] "GET /get_alerts HTTP/1.1" 200 -
+2025-10-26 04:40:45,276 - __main__ - ERROR - Phoenix medical logging failed: can't subtract offset-naive and offset-aware datetimes
+2025-10-26 04:40:45,280 - __main__ - ERROR - Phoenix medical logging failed: can't subtract offset-naive and offset-aware datetimes
+2025-10-26 04:40:45,281 - __main__ - CRITICAL -    Breathing: 109.5 bpm (irregular)
+2025-10-26 04:40:45,281 - __main__ - CRITICAL -    Distress Score: 0.65
+2025-10-26 04:40:45,286 - werkzeug - INFO - 127.0.0.1 - - [26/Oct/2025 04:40:45] "POST /analyze_audio HTTP/1.1" 200 -
+2025-10-26 04:40:45,286 - __main__ - CRITICAL -    O2 Estimate: 80.2%
+2025-10-26 04:40:45,287 - __main__ - ERROR - Emergency alert trigger failed: can't subtract offset-naive and offset-aware datetimes
+2025-10-26 04:40:45,291 - werkzeug - INFO - 127.0.0.1 - - [26/Oct/2025 04:40:45] "POST /analyze_audio HTTP/1.1" 200 -
+2025-10-26 04:40:46,398 - __main__ - ERROR - Phoenix medical logging failed: can't subtract offset-naive and offset-aware datetimes
+2025-10-26 04:40:46,402 - werkzeug - INFO - 127.0.0.1 - - [26/Oct/2025 04:40:46] "POST /analyze_audio HTTP/1.1" 200 -
+2025-10-26 04:40:47,659 - __main__ - ERROR - Phoenix medical logging failed: can't subtract offset-naive and offset-aware datetimes
+2025-10-26 04:40:47,661 - __main__ - CRITICAL -    Breathing: 0.0 bpm (absent)
+2025-10-26 04:40:47,661 - __main__ - CRITICAL -    Distress Score: 0.70
+2025-10-26 04:40:47,661 - __main__ - CRITICAL -    O2 Estimate: 80.0%
+2025-10-26 04:40:47,661 - __main__ - ERROR - Emergency alert trigger failed: can't subtract offset-naive and offset-aware datetimes
+2025-10-26 04:40:47,664 - werkzeug - INFO - 127.0.0.1 - - [26/Oct/2025 04:40:47] "POST /analyze_audio HTTP/1.1" 200 -
+2025-10-26 04:40:48,552 - __main__ - ERROR - Phoenix medical logging failed: can't subtract offset-naive and offset-aware datetimes
+2025-10-26 04:40:48,554 - werkzeug - INFO - 127.0.0.1 - - [26/Oct/2025 04:40:48] "POST /analyze_audio HTTP/1.1" 200 -
+2025-10-26 04:40:50,073 - __main__ - ERROR - Phoenix medical logging failed: can't subtract offset-naive and offset-aware datetimes
+2025-10-26 04:40:50,076 - werkzeug - INFO - 127.0.0.1 - - [26/Oct/2025 04:40:50] "POST /analyze_audio HTTP/1.1" 200 -
+2025-10-26 04:40:50,240 - werkzeug - INFO - 127.0.0.1 - - [26/Oct/2025 04:40:50] "GET /get_alerts HTTP/1.1" 200 -
+2025-10-26 04:40:50,309 - __main__ - ERROR - Phoenix medical logging failed: can't subtract offset-naive and offset-aware datetimes
+2025-10-26 04:40:50,313 - werkzeug - INFO - 127.0.0.1 - - [26/Oct/2025 04:40:50] "POST /analyze_audio HTTP/1.1" 200 -
+2025-10-26 04:40:51,163 - __main__ - ERROR - Phoenix medical logging failed: can't subtract offset-naive and offset-aware datetimes
+2025-10-26 04:40:51,177 - __main__ - CRITICAL -    Breathing: 0.0 bpm (absent)
+2025-10-26 04:40:51,178 - __main__ - CRITICAL -    Distress Score: 0.85
+2025-10-26 04:40:51,179 - __main__ - CRITICAL -    O2 Estimate: 80.0%
+2025-10-26 04:40:51,181 - __main__ - ERROR - Emergency alert trigger failed: can't subtract offset-naive and offset-aware datetimes
+2025-10-26 04:40:51,199 - werkzeug - INFO - 127.0.0.1 - - [26/Oct/2025 04:40:51] "POST /analyze_audio HTTP/1.1" 200 -
+2025-10-26 04:40:52,590 - __main__ - ERROR - Phoenix medical logging failed: can't subtract offset-naive and offset-aware datetimes
+2025-10-26 04:40:52,593 - werkzeug - INFO - 127.0.0.1 - - [26/Oct/2025 04:40:52] "POST /analyze_audio HTTP/1.1" 200 -
+2025-10-26 04:40:53,466 - __main__ - ERROR - Phoenix medical logging failed: can't subtract offset-naive and offset-aware datetimes
+2025-10-26 04:40:53,484 - werkzeug - INFO - 127.0.0.1 - - [26/Oct/2025 04:40:53] "POST /analyze_audio HTTP/1.1" 200 -
+2025-10-26 04:40:55,055 - __main__ - ERROR - Phoenix medical logging failed: can't subtract offset-naive and offset-aware datetimes
+2025-10-26 04:40:55,060 - werkzeug - INFO - 127.0.0.1 - - [26/Oct/2025 04:40:55] "POST /analyze_audio HTTP/1.1" 200 -
+2025-10-26 04:40:55,095 - __main__ - ERROR - Phoenix medical logging failed: can't subtract offset-naive and offset-aware datetimes
+2025-10-26 04:40:55,098 - __main__ - CRITICAL -    Breathing: 92.6 bpm (irregular)
+2025-10-26 04:40:55,098 - __main__ - CRITICAL -    Distress Score: 0.65
+2025-10-26 04:40:55,098 - __main__ - CRITICAL -    O2 Estimate: 85.2%
+2025-10-26 04:40:55,098 - __main__ - ERROR - Emergency alert trigger failed: can't subtract offset-naive and offset-aware datetimes
+2025-10-26 04:40:55,102 - werkzeug - INFO - 127.0.0.1 - - [26/Oct/2025 04:40:55] "POST /analyze_audio HTTP/1.1" 200 -
+2025-10-26 04:40:55,220 - werkzeug - INFO - 127.0.0.1 - - [26/Oct/2025 04:40:55] "GET /get_alerts HTTP/1.1" 200 -
+2025-10-26 04:40:55,919 - __main__ - ERROR - Phoenix medical logging failed: can't subtract offset-naive and offset-aware datetimes
+2025-10-26 04:40:55,926 - werkzeug - INFO - 127.0.0.1 - - [26/Oct/2025 04:40:55] "POST /analyze_audio HTTP/1.1" 200 -
+2025-10-26 04:40:57,298 - __main__ - ERROR - Phoenix medical logging failed: can't subtract offset-naive and offset-aware datetimes
+2025-10-26 04:40:57,304 - werkzeug - INFO - 127.0.0.1 - - [26/Oct/2025 04:40:57] "POST /analyze_audio HTTP/1.1" 200 -
+2025-10-26 04:40:58,324 - __main__ - ERROR - Phoenix medical logging failed: can't subtract offset-naive and offset-aware datetimes
+2025-10-26 04:40:58,327 - __main__ - CRITICAL -    Breathing: 0.0 bpm (absent)
+2025-10-26 04:40:58,327 - __main__ - CRITICAL -    Distress Score: 0.70
+2025-10-26 04:40:58,327 - __main__ - CRITICAL -    O2 Estimate: 80.0%
+2025-10-26 04:40:58,328 - __main__ - ERROR - Emergency alert trigger failed: can't subtract offset-naive and offset-aware datetimes
+2025-10-26 04:40:58,330 - werkzeug - INFO - 127.0.0.1 - - [26/Oct/2025 04:40:58] "POST /analyze_audio HTTP/1.1" 200 -
+2025-10-26 04:40:59,776 - __main__ - ERROR - Phoenix medical logging failed: can't subtract offset-naive and offset-aware datetimes
+2025-10-26 04:40:59,781 - werkzeug - INFO - 127.0.0.1 - - [26/Oct/2025 04:40:59] "POST /analyze_audio HTTP/1.1" 200 -
+2025-10-26 04:40:59,935 - __main__ - ERROR - Phoenix medical logging failed: can't subtract offset-naive and offset-aware datetimes
+2025-10-26 04:40:59,938 - werkzeug - INFO - 127.0.0.1 - - [26/Oct/2025 04:40:59] "POST /analyze_audio HTTP/1.1" 200 -
+2025-10-26 04:41:00,218 - werkzeug - INFO - 127.0.0.1 - - [26/Oct/2025 04:41:00] "GET /get_alerts HTTP/1.1" 200 -
+2025-10-26 04:41:01,078 - __main__ - ERROR - Phoenix medical logging failed: can't subtract offset-naive and offset-aware datetimes
+2025-10-26 04:41:01,098 - werkzeug - INFO - 127.0.0.1 - - [26/Oct/2025 04:41:01] "POST /analyze_audio HTTP/1.1" 200 -
+2025-10-26 04:41:01,801 - __main__ - ERROR - Phoenix medical logging failed: can't subtract offset-naive and offset-aware datetimes
+2025-10-26 04:41:01,804 - werkzeug - INFO - 127.0.0.1 - - [26/Oct/2025 04:41:01] "POST /analyze_audio HTTP/1.1" 200 -
+2025-10-26 04:41:03,329 - __main__ - ERROR - Phoenix medical logging failed: can't subtract offset-naive and offset-aware datetimes
+2025-10-26 04:41:03,331 - werkzeug - INFO - 127.0.0.1 - - [26/Oct/2025 04:41:03] "POST /analyze_audio HTTP/1.1" 200 -
+2025-10-26 04:41:04,323 - __main__ - ERROR - Phoenix medical logging failed: can't subtract offset-naive and offset-aware datetimes
+2025-10-26 04:41:04,327 - werkzeug - INFO - 127.0.0.1 - - [26/Oct/2025 04:41:04] "POST /analyze_audio HTTP/1.1" 200 -
+2025-10-26 04:41:05,230 - werkzeug - INFO - 127.0.0.1 - - [26/Oct/2025 04:41:05] "GET /get_alerts HTTP/1.1" 200 -
+2025-10-26 04:41:05,290 - __main__ - ERROR - Phoenix medical logging failed: can't subtract offset-naive and offset-aware datetimes
+2025-10-26 04:41:05,295 - __main__ - CRITICAL -    Breathing: 75.6 bpm (irregular)
+2025-10-26 04:41:05,296 - __main__ - CRITICAL -    Distress Score: 0.65
+2025-10-26 04:41:05,296 - __main__ - CRITICAL -    O2 Estimate: 90.3%
+2025-10-26 04:41:05,296 - __main__ - ERROR - Emergency alert trigger failed: can't subtract offset-naive and offset-aware datetimes
+2025-10-26 04:41:05,301 - werkzeug - INFO - 127.0.0.1 - - [26/Oct/2025 04:41:05] "POST /analyze_audio HTTP/1.1" 200 -
+2025-10-26 04:41:05,564 - __main__ - ERROR - Phoenix medical logging failed: can't subtract offset-naive and offset-aware datetimes
+2025-10-26 04:41:05,568 - werkzeug - INFO - 127.0.0.1 - - [26/Oct/2025 04:41:05] "POST /analyze_audio HTTP/1.1" 200 -
+2025-10-26 04:41:06,671 - __main__ - ERROR - Phoenix medical logging failed: can't subtract offset-naive and offset-aware datetimes
+2025-10-26 04:41:06,679 - __main__ - CRITICAL -    Breathing: 107.7 bpm (irregular)
+2025-10-26 04:41:06,680 - __main__ - CRITICAL -    Distress Score: 0.50
+2025-10-26 04:41:06,680 - __main__ - CRITICAL -    O2 Estimate: 80.7%
+2025-10-26 04:41:06,681 - __main__ - ERROR - Emergency alert trigger failed: can't subtract offset-naive and offset-aware datetimes
+2025-10-26 04:41:06,687 - werkzeug - INFO - 127.0.0.1 - - [26/Oct/2025 04:41:06] "POST /analyze_audio HTTP/1.1" 200 -
+2025-10-26 04:41:08,246 - __main__ - ERROR - Phoenix medical logging failed: can't subtract offset-naive and offset-aware datetimes
+2025-10-26 04:41:08,249 - werkzeug - INFO - 127.0.0.1 - - [26/Oct/2025 04:41:08] "POST /analyze_audio HTTP/1.1" 200 -
+2025-10-26 04:41:09,039 - __main__ - ERROR - Phoenix medical logging failed: can't subtract offset-naive and offset-aware datetimes
+2025-10-26 04:41:09,054 - __main__ - CRITICAL -    Breathing: 105.8 bpm (irregular)
+2025-10-26 04:41:09,054 - __main__ - CRITICAL -    Distress Score: 0.35
+2025-10-26 04:41:09,055 - __main__ - CRITICAL -    O2 Estimate: 81.3%
+2025-10-26 04:41:09,055 - __main__ - ERROR - Emergency alert trigger failed: can't subtract offset-naive and offset-aware datetimes
+2025-10-26 04:41:09,060 - werkzeug - INFO - 127.0.0.1 - - [26/Oct/2025 04:41:09] "POST /analyze_audio HTTP/1.1" 200 -
+2025-10-26 04:41:10,237 - werkzeug - INFO - 127.0.0.1 - - [26/Oct/2025 04:41:10] "GET /get_alerts HTTP/1.1" 200 -
+2025-10-26 04:41:10,342 - __main__ - ERROR - Phoenix medical logging failed: can't subtract offset-naive and offset-aware datetimes
+2025-10-26 04:41:10,351 - werkzeug - INFO - 127.0.0.1 - - [26/Oct/2025 04:41:10] "POST /analyze_audio HTTP/1.1" 200 -
+2025-10-26 04:41:10,566 - __main__ - ERROR - Phoenix medical logging failed: can't subtract offset-naive and offset-aware datetimes
+2025-10-26 04:41:10,570 - werkzeug - INFO - 127.0.0.1 - - [26/Oct/2025 04:41:10] "POST /analyze_audio HTTP/1.1" 200 -
+2025-10-26 04:41:11,467 - __main__ - ERROR - Phoenix medical logging failed: can't subtract offset-naive and offset-aware datetimes
+2025-10-26 04:41:11,470 - werkzeug - INFO - 127.0.0.1 - - [26/Oct/2025 04:41:11] "POST /analyze_audio HTTP/1.1" 200 -
+2025-10-26 04:41:13,026 - __main__ - ERROR - Phoenix medical logging failed: can't subtract offset-naive and offset-aware datetimes
+2025-10-26 04:41:13,029 - werkzeug - INFO - 127.0.0.1 - - [26/Oct/2025 04:41:13] "POST /analyze_audio HTTP/1.1" 200 -
+2025-10-26 04:41:13,851 - __main__ - ERROR - Phoenix medical logging failed: can't subtract offset-naive and offset-aware datetimes
+2025-10-26 04:41:13,855 - werkzeug - INFO - 127.0.0.1 - - [26/Oct/2025 04:41:13] "POST /analyze_audio HTTP/1.1" 200 -
+2025-10-26 04:41:15,224 - werkzeug - INFO - 127.0.0.1 - - [26/Oct/2025 04:41:15] "GET /get_alerts HTTP/1.1" 200 -
+2025-10-26 04:41:15,248 - __main__ - ERROR - Phoenix medical logging failed: can't subtract offset-naive and offset-aware datetimes
+2025-10-26 04:41:15,250 - __main__ - CRITICAL -    Breathing: 73.5 bpm (irregular)
+2025-10-26 04:41:15,250 - __main__ - CRITICAL -    Distress Score: 0.65
+2025-10-26 04:41:15,251 - __main__ - CRITICAL -    O2 Estimate: 91.0%
+2025-10-26 04:41:15,252 - __main__ - ERROR - Emergency alert trigger failed: can't subtract offset-naive and offset-aware datetimes
+2025-10-26 04:41:15,256 - werkzeug - INFO - 127.0.0.1 - - [26/Oct/2025 04:41:15] "POST /analyze_audio HTTP/1.1" 200 -
+2025-10-26 04:41:15,411 - __main__ - ERROR - Phoenix medical logging failed: can't subtract offset-naive and offset-aware datetimes
+2025-10-26 04:41:15,418 - werkzeug - INFO - 127.0.0.1 - - [26/Oct/2025 04:41:15] "POST /analyze_audio HTTP/1.1" 200 -
+2025-10-26 04:41:16,307 - __main__ - ERROR - Phoenix medical logging failed: can't subtract offset-naive and offset-aware datetimes
+2025-10-26 04:41:16,321 - werkzeug - INFO - 127.0.0.1 - - [26/Oct/2025 04:41:16] "POST /analyze_audio HTTP/1.1" 200 -
+2025-10-26 04:41:17,832 - __main__ - ERROR - Phoenix medical logging failed: can't subtract offset-naive and offset-aware datetimes
+2025-10-26 04:41:17,834 - __main__ - CRITICAL -    Breathing: 110.9 bpm (irregular)
+2025-10-26 04:41:17,834 - __main__ - CRITICAL -    Distress Score: 0.50
+2025-10-26 04:41:17,834 - __main__ - CRITICAL -    O2 Estimate: 79.7%
+2025-10-26 04:41:17,834 - __main__ - ERROR - Emergency alert trigger failed: can't subtract offset-naive and offset-aware datetimes
+2025-10-26 04:41:17,837 - werkzeug - INFO - 127.0.0.1 - - [26/Oct/2025 04:41:17] "POST /analyze_audio HTTP/1.1" 200 -
+2025-10-26 04:41:18,991 - __main__ - ERROR - Phoenix medical logging failed: can't subtract offset-naive and offset-aware datetimes
+2025-10-26 04:41:18,998 - werkzeug - INFO - 127.0.0.1 - - [26/Oct/2025 04:41:18] "POST /analyze_audio HTTP/1.1" 200 -
+2025-10-26 04:41:53,780 - werkzeug - INFO - 127.0.0.1 - - [26/Oct/2025 04:41:53] "POST /start_monitoring HTTP/1.1" 200 -
+2025-10-26 04:41:55,112 - __main__ - ERROR - Phoenix medical logging failed: can't subtract offset-naive and offset-aware datetimes
+2025-10-26 04:41:55,118 - __main__ - CRITICAL -    Breathing: 0.0 bpm (absent)
+2025-10-26 04:41:55,118 - __main__ - CRITICAL -    Distress Score: 0.85
+2025-10-26 04:41:55,123 - __main__ - CRITICAL -    O2 Estimate: 75.0%
+2025-10-26 04:41:55,124 - __main__ - ERROR - Emergency alert trigger failed: can't subtract offset-naive and offset-aware datetimes
+2025-10-26 04:41:55,131 - werkzeug - INFO - 127.0.0.1 - - [26/Oct/2025 04:41:55] "POST /analyze_audio HTTP/1.1" 200 -
+2025-10-26 04:41:56,687 - __main__ - ERROR - Phoenix medical logging failed: can't subtract offset-naive and offset-aware datetimes
+2025-10-26 04:41:56,691 - werkzeug - INFO - 127.0.0.1 - - [26/Oct/2025 04:41:56] "POST /analyze_audio HTTP/1.1" 200 -
+2025-10-26 04:41:57,590 - __main__ - ERROR - Phoenix medical logging failed: can't subtract offset-naive and offset-aware datetimes
+2025-10-26 04:41:57,596 - werkzeug - INFO - 127.0.0.1 - - [26/Oct/2025 04:41:57] "POST /analyze_audio HTTP/1.1" 200 -
+2025-10-26 04:41:59,091 - __main__ - ERROR - Phoenix medical logging failed: can't subtract offset-naive and offset-aware datetimes
+2025-10-26 04:41:59,096 - __main__ - CRITICAL -    Breathing: 110.0 bpm (irregular)
+2025-10-26 04:41:59,096 - __main__ - CRITICAL -    Distress Score: 0.50
+2025-10-26 04:41:59,096 - __main__ - CRITICAL -    O2 Estimate: 80.0%
+2025-10-26 04:41:59,096 - __main__ - ERROR - Emergency alert trigger failed: can't subtract offset-naive and offset-aware datetimes
+2025-10-26 04:41:59,107 - werkzeug - INFO - 127.0.0.1 - - [26/Oct/2025 04:41:59] "GET /get_alerts HTTP/1.1" 200 -
+2025-10-26 04:41:59,115 - werkzeug - INFO - 127.0.0.1 - - [26/Oct/2025 04:41:59] "POST /analyze_audio HTTP/1.1" 200 -
+2025-10-26 04:41:59,134 - __main__ - ERROR - Phoenix medical logging failed: can't subtract offset-naive and offset-aware datetimes
+2025-10-26 04:41:59,138 - werkzeug - INFO - 127.0.0.1 - - [26/Oct/2025 04:41:59] "POST /analyze_audio HTTP/1.1" 200 -
+2025-10-26 04:42:00,202 - __main__ - ERROR - Phoenix medical logging failed: can't subtract offset-naive and offset-aware datetimes
+2025-10-26 04:42:00,206 - werkzeug - INFO - 127.0.0.1 - - [26/Oct/2025 04:42:00] "POST /analyze_audio HTTP/1.1" 200 -
+2025-10-26 04:42:01,506 - __main__ - ERROR - Phoenix medical logging failed: can't subtract offset-naive and offset-aware datetimes
+2025-10-26 04:42:01,510 - __main__ - CRITICAL -    Breathing: 0.0 bpm (absent)
+2025-10-26 04:42:01,510 - __main__ - CRITICAL -    Distress Score: 0.85
+2025-10-26 04:42:01,510 - __main__ - CRITICAL -    O2 Estimate: 80.0%
+2025-10-26 04:42:01,510 - __main__ - ERROR - Emergency alert trigger failed: can't subtract offset-naive and offset-aware datetimes
+2025-10-26 04:42:01,514 - werkzeug - INFO - 127.0.0.1 - - [26/Oct/2025 04:42:01] "POST /analyze_audio HTTP/1.1" 200 -
+2025-10-26 04:42:02,398 - __main__ - ERROR - Phoenix medical logging failed: can't subtract offset-naive and offset-aware datetimes
+2025-10-26 04:42:02,402 - werkzeug - INFO - 127.0.0.1 - - [26/Oct/2025 04:42:02] "POST /analyze_audio HTTP/1.1" 200 -
+2025-10-26 04:42:04,055 - __main__ - ERROR - Phoenix medical logging failed: can't subtract offset-naive and offset-aware datetimes
+2025-10-26 04:42:04,065 - werkzeug - INFO - 127.0.0.1 - - [26/Oct/2025 04:42:04] "POST /analyze_audio HTTP/1.1" 200 -
+2025-10-26 04:42:04,115 - werkzeug - INFO - 127.0.0.1 - - [26/Oct/2025 04:42:04] "GET /get_alerts HTTP/1.1" 200 -
+2025-10-26 04:42:04,201 - __main__ - ERROR - Phoenix medical logging failed: can't subtract offset-naive and offset-aware datetimes
+2025-10-26 04:42:04,213 - __main__ - CRITICAL -    Breathing: 95.8 bpm (irregular)
+2025-10-26 04:42:04,214 - __main__ - CRITICAL -    Distress Score: 0.65
+2025-10-26 04:42:04,216 - __main__ - CRITICAL -    O2 Estimate: 84.3%
+2025-10-26 04:42:04,217 - __main__ - ERROR - Emergency alert trigger failed: can't subtract offset-naive and offset-aware datetimes
+2025-10-26 04:42:04,229 - werkzeug - INFO - 127.0.0.1 - - [26/Oct/2025 04:42:04] "POST /analyze_audio HTTP/1.1" 200 -
+2025-10-26 04:42:04,818 - __main__ - ERROR - Phoenix medical logging failed: can't subtract offset-naive and offset-aware datetimes
+2025-10-26 04:42:04,821 - werkzeug - INFO - 127.0.0.1 - - [26/Oct/2025 04:42:04] "POST /analyze_audio HTTP/1.1" 200 -
+2025-10-26 04:42:06,331 - __main__ - ERROR - Phoenix medical logging failed: can't subtract offset-naive and offset-aware datetimes
+2025-10-26 04:42:06,335 - werkzeug - INFO - 127.0.0.1 - - [26/Oct/2025 04:42:06] "POST /analyze_audio HTTP/1.1" 200 -
+2025-10-26 04:42:07,348 - __main__ - ERROR - Phoenix medical logging failed: can't subtract offset-naive and offset-aware datetimes
+2025-10-26 04:42:07,411 - __main__ - CRITICAL -    Breathing: 0.0 bpm (absent)
+2025-10-26 04:42:07,412 - __main__ - CRITICAL -    Distress Score: 0.70
+2025-10-26 04:42:07,412 - __main__ - CRITICAL -    O2 Estimate: 80.0%
+2025-10-26 04:42:07,412 - __main__ - ERROR - Emergency alert trigger failed: can't subtract offset-naive and offset-aware datetimes
+2025-10-26 04:42:07,422 - werkzeug - INFO - 127.0.0.1 - - [26/Oct/2025 04:42:07] "POST /analyze_audio HTTP/1.1" 200 -
+2025-10-26 04:42:08,780 - __main__ - ERROR - Phoenix medical logging failed: can't subtract offset-naive and offset-aware datetimes
+2025-10-26 04:42:08,783 - werkzeug - INFO - 127.0.0.1 - - [26/Oct/2025 04:42:08] "POST /analyze_audio HTTP/1.1" 200 -
+2025-10-26 04:42:09,082 - __main__ - ERROR - Phoenix medical logging failed: can't subtract offset-naive and offset-aware datetimes
+2025-10-26 04:42:09,089 - __main__ - CRITICAL -    Breathing: 60.3 bpm (irregular)
+2025-10-26 04:42:09,090 - __main__ - CRITICAL -    Distress Score: 0.65
+2025-10-26 04:42:09,090 - __main__ - CRITICAL -    O2 Estimate: 94.9%
+2025-10-26 04:42:09,093 - __main__ - ERROR - Emergency alert trigger failed: can't subtract offset-naive and offset-aware datetimes
+2025-10-26 04:42:09,100 - werkzeug - INFO - 127.0.0.1 - - [26/Oct/2025 04:42:09] "POST /analyze_audio HTTP/1.1" 200 -
+2025-10-26 04:42:09,102 - werkzeug - INFO - 127.0.0.1 - - [26/Oct/2025 04:42:09] "GET /get_alerts HTTP/1.1" 200 -
+2025-10-26 04:42:09,637 - __main__ - ERROR - Phoenix medical logging failed: can't subtract offset-naive and offset-aware datetimes
+2025-10-26 04:42:09,641 - __main__ - CRITICAL -    Breathing: 0.0 bpm (absent)
+2025-10-26 04:42:09,641 - __main__ - CRITICAL -    Distress Score: 0.70
+2025-10-26 04:42:09,641 - __main__ - CRITICAL -    O2 Estimate: 80.0%
+2025-10-26 04:42:09,641 - __main__ - ERROR - Emergency alert trigger failed: can't subtract offset-naive and offset-aware datetimes
+2025-10-26 04:42:09,644 - werkzeug - INFO - 127.0.0.1 - - [26/Oct/2025 04:42:09] "POST /analyze_audio HTTP/1.1" 200 -
+2025-10-26 04:42:11,182 - __main__ - ERROR - Phoenix medical logging failed: can't subtract offset-naive and offset-aware datetimes
+2025-10-26 04:42:11,185 - __main__ - CRITICAL -    Breathing: 0.0 bpm (absent)
+2025-10-26 04:42:11,185 - __main__ - CRITICAL -    Distress Score: 0.70
+2025-10-26 04:42:11,185 - __main__ - CRITICAL -    O2 Estimate: 80.0%
+2025-10-26 04:42:11,186 - __main__ - ERROR - Emergency alert trigger failed: can't subtract offset-naive and offset-aware datetimes
+2025-10-26 04:42:11,189 - werkzeug - INFO - 127.0.0.1 - - [26/Oct/2025 04:42:11] "POST /analyze_audio HTTP/1.1" 200 -
+2025-10-26 04:42:12,171 - __main__ - ERROR - Phoenix medical logging failed: can't subtract offset-naive and offset-aware datetimes
+2025-10-26 04:42:12,189 - werkzeug - INFO - 127.0.0.1 - - [26/Oct/2025 04:42:12] "POST /analyze_audio HTTP/1.1" 200 -
+2025-10-26 04:42:13,584 - __main__ - ERROR - Phoenix medical logging failed: can't subtract offset-naive and offset-aware datetimes
+2025-10-26 04:42:13,591 - werkzeug - INFO - 127.0.0.1 - - [26/Oct/2025 04:42:13] "POST /analyze_audio HTTP/1.1" 200 -
+2025-10-26 04:42:13,815 - __main__ - ERROR - Phoenix medical logging failed: can't subtract offset-naive and offset-aware datetimes
+2025-10-26 04:42:13,819 - werkzeug - INFO - 127.0.0.1 - - [26/Oct/2025 04:42:13] "POST /analyze_audio HTTP/1.1" 200 -
+2025-10-26 04:42:14,097 - werkzeug - INFO - 127.0.0.1 - - [26/Oct/2025 04:42:14] "GET /get_alerts HTTP/1.1" 200 -
+2025-10-26 04:42:14,784 - __main__ - ERROR - Phoenix medical logging failed: can't subtract offset-naive and offset-aware datetimes
+2025-10-26 04:42:14,788 - werkzeug - INFO - 127.0.0.1 - - [26/Oct/2025 04:42:14] "POST /analyze_audio HTTP/1.1" 200 -
+2025-10-26 04:42:15,674 - __main__ - ERROR - Phoenix medical logging failed: can't subtract offset-naive and offset-aware datetimes
+2025-10-26 04:42:15,677 - __main__ - CRITICAL -    Breathing: 0.0 bpm (absent)
+2025-10-26 04:42:15,677 - __main__ - CRITICAL -    Distress Score: 0.85
+2025-10-26 04:42:15,677 - __main__ - CRITICAL -    O2 Estimate: 80.0%
+2025-10-26 04:42:15,677 - __main__ - ERROR - Emergency alert trigger failed: can't subtract offset-naive and offset-aware datetimes
+2025-10-26 04:42:15,684 - werkzeug - INFO - 127.0.0.1 - - [26/Oct/2025 04:42:15] "POST /analyze_audio HTTP/1.1" 200 -
+2025-10-26 04:42:17,161 - __main__ - ERROR - Phoenix medical logging failed: can't subtract offset-naive and offset-aware datetimes
+2025-10-26 04:42:17,164 - werkzeug - INFO - 127.0.0.1 - - [26/Oct/2025 04:42:17] "POST /analyze_audio HTTP/1.1" 200 -
+2025-10-26 04:42:18,066 - __main__ - ERROR - Phoenix medical logging failed: can't subtract offset-naive and offset-aware datetimes
+2025-10-26 04:42:18,069 - werkzeug - INFO - 127.0.0.1 - - [26/Oct/2025 04:42:18] "POST /analyze_audio HTTP/1.1" 200 -
+2025-10-26 04:42:19,091 - werkzeug - INFO - 127.0.0.1 - - [26/Oct/2025 04:42:19] "GET /get_alerts HTTP/1.1" 200 -
+2025-10-26 04:42:19,117 - __main__ - ERROR - Phoenix medical logging failed: can't subtract offset-naive and offset-aware datetimes
+2025-10-26 04:42:19,121 - __main__ - CRITICAL -    Breathing: 68.8 bpm (irregular)
+2025-10-26 04:42:19,121 - __main__ - CRITICAL -    Distress Score: 0.65
+2025-10-26 04:42:19,121 - __main__ - CRITICAL -    O2 Estimate: 92.3%
+2025-10-26 04:42:19,121 - __main__ - ERROR - Emergency alert trigger failed: can't subtract offset-naive and offset-aware datetimes
+2025-10-26 04:42:19,126 - werkzeug - INFO - 127.0.0.1 - - [26/Oct/2025 04:42:19] "POST /analyze_audio HTTP/1.1" 200 -
+2025-10-26 04:42:19,451 - __main__ - ERROR - Phoenix medical logging failed: can't subtract offset-naive and offset-aware datetimes
+2025-10-26 04:42:19,453 - werkzeug - INFO - 127.0.0.1 - - [26/Oct/2025 04:42:19] "POST /analyze_audio HTTP/1.1" 200 -
+2025-10-26 04:42:20,497 - __main__ - ERROR - Phoenix medical logging failed: can't subtract offset-naive and offset-aware datetimes
+2025-10-26 04:42:20,500 - werkzeug - INFO - 127.0.0.1 - - [26/Oct/2025 04:42:20] "POST /analyze_audio HTTP/1.1" 200 -
+2025-10-26 04:42:22,068 - __main__ - ERROR - Phoenix medical logging failed: can't subtract offset-naive and offset-aware datetimes
+2025-10-26 04:42:22,072 - werkzeug - INFO - 127.0.0.1 - - [26/Oct/2025 04:42:22] "POST /analyze_audio HTTP/1.1" 200 -
+2025-10-26 04:42:22,879 - __main__ - ERROR - Phoenix medical logging failed: can't subtract offset-naive and offset-aware datetimes
+2025-10-26 04:42:22,914 - werkzeug - INFO - 127.0.0.1 - - [26/Oct/2025 04:42:22] "POST /analyze_audio HTTP/1.1" 200 -
+2025-10-26 04:42:24,100 - werkzeug - INFO - 127.0.0.1 - - [26/Oct/2025 04:42:24] "GET /get_alerts HTTP/1.1" 200 -
+2025-10-26 04:42:24,144 - __main__ - ERROR - Phoenix medical logging failed: can't subtract offset-naive and offset-aware datetimes
+2025-10-26 04:42:24,150 - werkzeug - INFO - 127.0.0.1 - - [26/Oct/2025 04:42:24] "POST /analyze_audio HTTP/1.1" 200 -
+2025-10-26 04:42:24,446 - __main__ - ERROR - Phoenix medical logging failed: can't subtract offset-naive and offset-aware datetimes
+2025-10-26 04:42:24,449 - werkzeug - INFO - 127.0.0.1 - - [26/Oct/2025 04:42:24] "POST /analyze_audio HTTP/1.1" 200 -
+2025-10-26 04:42:25,316 - __main__ - ERROR - Phoenix medical logging failed: can't subtract offset-naive and offset-aware datetimes
+2025-10-26 04:42:25,319 - werkzeug - INFO - 127.0.0.1 - - [26/Oct/2025 04:42:25] "POST /analyze_audio HTTP/1.1" 200 -
+2025-10-26 04:42:26,884 - __main__ - ERROR - Phoenix medical logging failed: can't subtract offset-naive and offset-aware datetimes
+2025-10-26 04:42:26,888 - __main__ - CRITICAL -    Breathing: 110.1 bpm (irregular)
+2025-10-26 04:42:26,888 - __main__ - CRITICAL -    Distress Score: 0.50
+2025-10-26 04:42:26,889 - __main__ - CRITICAL -    O2 Estimate: 80.0%
+2025-10-26 04:42:26,889 - __main__ - ERROR - Emergency alert trigger failed: can't subtract offset-naive and offset-aware datetimes
+2025-10-26 04:42:26,892 - werkzeug - INFO - 127.0.0.1 - - [26/Oct/2025 04:42:26] "POST /analyze_audio HTTP/1.1" 200 -
+2025-10-26 04:43:14,045 - werkzeug - INFO - 127.0.0.1 - - [26/Oct/2025 04:43:14] "POST /start_monitoring HTTP/1.1" 200 -
+2025-10-26 04:43:15,886 - __main__ - ERROR - Phoenix medical logging failed: can't subtract offset-naive and offset-aware datetimes
+2025-10-26 04:43:15,890 - __main__ - CRITICAL -    Breathing: 0.0 bpm (absent)
+2025-10-26 04:43:15,890 - __main__ - CRITICAL -    Distress Score: 0.85
+2025-10-26 04:43:15,890 - __main__ - CRITICAL -    O2 Estimate: 75.0%
+2025-10-26 04:43:15,891 - __main__ - ERROR - Emergency alert trigger failed: can't subtract offset-naive and offset-aware datetimes
+2025-10-26 04:43:15,893 - werkzeug - INFO - 127.0.0.1 - - [26/Oct/2025 04:43:15] "POST /analyze_audio HTTP/1.1" 200 -
+2025-10-26 04:43:16,839 - __main__ - ERROR - Phoenix medical logging failed: can't subtract offset-naive and offset-aware datetimes
+2025-10-26 04:43:16,843 - werkzeug - INFO - 127.0.0.1 - - [26/Oct/2025 04:43:16] "POST /analyze_audio HTTP/1.1" 200 -
+2025-10-26 04:43:18,371 - __main__ - ERROR - Phoenix medical logging failed: can't subtract offset-naive and offset-aware datetimes
+2025-10-26 04:43:18,374 - werkzeug - INFO - 127.0.0.1 - - [26/Oct/2025 04:43:18] "POST /analyze_audio HTTP/1.1" 200 -
+2025-10-26 04:43:19,130 - __main__ - ERROR - Phoenix medical logging failed: can't subtract offset-naive and offset-aware datetimes
+2025-10-26 04:43:19,160 - __main__ - CRITICAL -    Breathing: 0.0 bpm (absent)
+2025-10-26 04:43:19,161 - __main__ - CRITICAL -    Distress Score: 1.00
+2025-10-26 04:43:19,162 - __main__ - CRITICAL -    O2 Estimate: 80.0%
+2025-10-26 04:43:19,163 - __main__ - ERROR - Emergency alert trigger failed: can't subtract offset-naive and offset-aware datetimes
+2025-10-26 04:43:19,169 - werkzeug - INFO - 127.0.0.1 - - [26/Oct/2025 04:43:19] "POST /analyze_audio HTTP/1.1" 200 -
+2025-10-26 04:43:19,386 - werkzeug - INFO - 127.0.0.1 - - [26/Oct/2025 04:43:19] "GET /get_alerts HTTP/1.1" 200 -
+2025-10-26 04:43:19,603 - __main__ - ERROR - Phoenix medical logging failed: can't subtract offset-naive and offset-aware datetimes
+2025-10-26 04:43:19,611 - werkzeug - INFO - 127.0.0.1 - - [26/Oct/2025 04:43:19] "POST /analyze_audio HTTP/1.1" 200 -
+2025-10-26 04:43:20,741 - __main__ - ERROR - Phoenix medical logging failed: can't subtract offset-naive and offset-aware datetimes
+2025-10-26 04:43:20,744 - werkzeug - INFO - 127.0.0.1 - - [26/Oct/2025 04:43:20] "POST /analyze_audio HTTP/1.1" 200 -
+2025-10-26 04:43:21,688 - __main__ - ERROR - Phoenix medical logging failed: can't subtract offset-naive and offset-aware datetimes
+2025-10-26 04:43:21,691 - __main__ - CRITICAL -    Breathing: 116.8 bpm (irregular)
+2025-10-26 04:43:21,691 - __main__ - CRITICAL -    Distress Score: 0.50
+2025-10-26 04:43:21,691 - __main__ - CRITICAL -    O2 Estimate: 78.0%
+2025-10-26 04:43:21,692 - __main__ - ERROR - Emergency alert trigger failed: can't subtract offset-naive and offset-aware datetimes
+2025-10-26 04:43:21,695 - werkzeug - INFO - 127.0.0.1 - - [26/Oct/2025 04:43:21] "POST /analyze_audio HTTP/1.1" 200 -
+2025-10-26 04:43:23,222 - __main__ - ERROR - Phoenix medical logging failed: can't subtract offset-naive and offset-aware datetimes
+2025-10-26 04:43:23,227 - werkzeug - INFO - 127.0.0.1 - - [26/Oct/2025 04:43:23] "POST /analyze_audio HTTP/1.1" 200 -
+2025-10-26 04:43:24,121 - __main__ - ERROR - Phoenix medical logging failed: can't subtract offset-naive and offset-aware datetimes
+2025-10-26 04:43:24,126 - werkzeug - INFO - 127.0.0.1 - - [26/Oct/2025 04:43:24] "POST /analyze_audio HTTP/1.1" 200 -
+2025-10-26 04:43:24,380 - werkzeug - INFO - 127.0.0.1 - - [26/Oct/2025 04:43:24] "GET /get_alerts HTTP/1.1" 200 -
+2025-10-26 04:43:24,410 - __main__ - ERROR - Phoenix medical logging failed: can't subtract offset-naive and offset-aware datetimes
+2025-10-26 04:43:24,420 - werkzeug - INFO - 127.0.0.1 - - [26/Oct/2025 04:43:24] "POST /analyze_audio HTTP/1.1" 200 -
+2025-10-26 04:43:25,573 - __main__ - ERROR - Phoenix medical logging failed: can't subtract offset-naive and offset-aware datetimes
+2025-10-26 04:43:25,578 - werkzeug - INFO - 127.0.0.1 - - [26/Oct/2025 04:43:25] "POST /analyze_audio HTTP/1.1" 200 -
+2025-10-26 04:43:26,491 - __main__ - ERROR - Phoenix medical logging failed: can't subtract offset-naive and offset-aware datetimes
+2025-10-26 04:43:26,495 - werkzeug - INFO - 127.0.0.1 - - [26/Oct/2025 04:43:26] "POST /analyze_audio HTTP/1.1" 200 -
+2025-10-26 04:43:28,022 - __main__ - ERROR - Phoenix medical logging failed: can't subtract offset-naive and offset-aware datetimes
+2025-10-26 04:43:28,026 - __main__ - CRITICAL -    Breathing: 0.0 bpm (absent)
+2025-10-26 04:43:28,026 - __main__ - CRITICAL -    Distress Score: 0.85
+2025-10-26 04:43:28,026 - __main__ - CRITICAL -    O2 Estimate: 80.0%
+2025-10-26 04:43:28,026 - __main__ - ERROR - Emergency alert trigger failed: can't subtract offset-naive and offset-aware datetimes
+2025-10-26 04:43:28,029 - werkzeug - INFO - 127.0.0.1 - - [26/Oct/2025 04:43:28] "POST /analyze_audio HTTP/1.1" 200 -
+2025-10-26 04:43:28,882 - __main__ - ERROR - Phoenix medical logging failed: can't subtract offset-naive and offset-aware datetimes
+2025-10-26 04:43:28,885 - __main__ - CRITICAL -    Breathing: 108.7 bpm (irregular)
+2025-10-26 04:43:28,886 - __main__ - CRITICAL -    Distress Score: 0.35
+2025-10-26 04:43:28,886 - __main__ - CRITICAL -    O2 Estimate: 80.4%
+2025-10-26 04:43:28,886 - __main__ - ERROR - Emergency alert trigger failed: can't subtract offset-naive and offset-aware datetimes
+2025-10-26 04:43:28,889 - werkzeug - INFO - 127.0.0.1 - - [26/Oct/2025 04:43:28] "POST /analyze_audio HTTP/1.1" 200 -
+2025-10-26 04:43:29,372 - werkzeug - INFO - 127.0.0.1 - - [26/Oct/2025 04:43:29] "GET /get_alerts HTTP/1.1" 200 -
+2025-10-26 04:43:29,402 - __main__ - ERROR - Phoenix medical logging failed: can't subtract offset-naive and offset-aware datetimes
+2025-10-26 04:43:29,404 - __main__ - CRITICAL -    Breathing: 0.0 bpm (absent)
+2025-10-26 04:43:29,404 - __main__ - CRITICAL -    Distress Score: 1.00
+2025-10-26 04:43:29,404 - __main__ - CRITICAL -    O2 Estimate: 80.0%
+2025-10-26 04:43:29,405 - __main__ - ERROR - Emergency alert trigger failed: can't subtract offset-naive and offset-aware datetimes
+2025-10-26 04:43:29,407 - werkzeug - INFO - 127.0.0.1 - - [26/Oct/2025 04:43:29] "POST /analyze_audio HTTP/1.1" 200 -
+2025-10-26 04:43:30,181 - __main__ - ERROR - Phoenix medical logging failed: can't subtract offset-naive and offset-aware datetimes
+2025-10-26 04:43:30,184 - werkzeug - INFO - 127.0.0.1 - - [26/Oct/2025 04:43:30] "POST /analyze_audio HTTP/1.1" 200 -
+2025-10-26 04:43:31,609 - __main__ - ERROR - Phoenix medical logging failed: can't subtract offset-naive and offset-aware datetimes
+2025-10-26 04:43:31,613 - werkzeug - INFO - 127.0.0.1 - - [26/Oct/2025 04:43:31] "POST /analyze_audio HTTP/1.1" 200 -
+2025-10-26 04:43:32,703 - __main__ - ERROR - Phoenix medical logging failed: can't subtract offset-naive and offset-aware datetimes
+2025-10-26 04:43:32,716 - werkzeug - INFO - 127.0.0.1 - - [26/Oct/2025 04:43:32] "POST /analyze_audio HTTP/1.1" 200 -
+2025-10-26 04:43:34,022 - __main__ - ERROR - Phoenix medical logging failed: can't subtract offset-naive and offset-aware datetimes
+2025-10-26 04:43:34,027 - werkzeug - INFO - 127.0.0.1 - - [26/Oct/2025 04:43:34] "POST /analyze_audio HTTP/1.1" 200 -
+2025-10-26 04:43:34,237 - __main__ - ERROR - Phoenix medical logging failed: can't subtract offset-naive and offset-aware datetimes
+2025-10-26 04:43:34,241 - __main__ - CRITICAL -    Breathing: 91.5 bpm (irregular)
+2025-10-26 04:43:34,241 - __main__ - CRITICAL -    Distress Score: 0.65
+2025-10-26 04:43:34,241 - __main__ - CRITICAL -    O2 Estimate: 85.6%
+2025-10-26 04:43:34,242 - __main__ - ERROR - Emergency alert trigger failed: can't subtract offset-naive and offset-aware datetimes
+2025-10-26 04:43:34,245 - werkzeug - INFO - 127.0.0.1 - - [26/Oct/2025 04:43:34] "POST /analyze_audio HTTP/1.1" 200 -
+2025-10-26 04:43:34,384 - werkzeug - INFO - 127.0.0.1 - - [26/Oct/2025 04:43:34] "GET /get_alerts HTTP/1.1" 200 -
+2025-10-26 04:43:34,995 - __main__ - ERROR - Phoenix medical logging failed: can't subtract offset-naive and offset-aware datetimes
+2025-10-26 04:43:34,998 - __main__ - CRITICAL -    Breathing: 112.5 bpm (irregular)
+2025-10-26 04:43:34,998 - __main__ - CRITICAL -    Distress Score: 0.50
+2025-10-26 04:43:34,998 - __main__ - CRITICAL -    O2 Estimate: 79.2%
+2025-10-26 04:43:34,998 - __main__ - ERROR - Emergency alert trigger failed: can't subtract offset-naive and offset-aware datetimes
+2025-10-26 04:43:35,001 - werkzeug - INFO - 127.0.0.1 - - [26/Oct/2025 04:43:35] "POST /analyze_audio HTTP/1.1" 200 -
+2025-10-26 04:43:36,446 - __main__ - ERROR - Phoenix medical logging failed: can't subtract offset-naive and offset-aware datetimes
+2025-10-26 04:43:36,449 - werkzeug - INFO - 127.0.0.1 - - [26/Oct/2025 04:43:36] "POST /analyze_audio HTTP/1.1" 200 -
+2025-10-26 04:43:37,320 - __main__ - ERROR - Phoenix medical logging failed: can't subtract offset-naive and offset-aware datetimes
+2025-10-26 04:43:37,323 - werkzeug - INFO - 127.0.0.1 - - [26/Oct/2025 04:43:37] "POST /analyze_audio HTTP/1.1" 200 -
+2025-10-26 04:43:38,844 - __main__ - ERROR - Phoenix medical logging failed: can't subtract offset-naive and offset-aware datetimes
+2025-10-26 04:43:38,848 - werkzeug - INFO - 127.0.0.1 - - [26/Oct/2025 04:43:38] "POST /analyze_audio HTTP/1.1" 200 -
+2025-10-26 04:43:39,076 - __main__ - ERROR - Phoenix medical logging failed: can't subtract offset-naive and offset-aware datetimes
+2025-10-26 04:43:39,081 - werkzeug - INFO - 127.0.0.1 - - [26/Oct/2025 04:43:39] "POST /analyze_audio HTTP/1.1" 200 -
+2025-10-26 04:43:39,366 - werkzeug - INFO - 127.0.0.1 - - [26/Oct/2025 04:43:39] "GET /get_alerts HTTP/1.1" 200 -
+2025-10-26 04:43:40,085 - __main__ - ERROR - Phoenix medical logging failed: can't subtract offset-naive and offset-aware datetimes
+2025-10-26 04:43:40,089 - werkzeug - INFO - 127.0.0.1 - - [26/Oct/2025 04:43:40] "POST /analyze_audio HTTP/1.1" 200 -
+2025-10-26 04:43:40,938 - __main__ - ERROR - Phoenix medical logging failed: can't subtract offset-naive and offset-aware datetimes
+2025-10-26 04:43:40,943 - werkzeug - INFO - 127.0.0.1 - - [26/Oct/2025 04:43:40] "POST /analyze_audio HTTP/1.1" 200 -
+2025-10-26 04:43:42,498 - __main__ - ERROR - Phoenix medical logging failed: can't subtract offset-naive and offset-aware datetimes
+2025-10-26 04:43:42,502 - werkzeug - INFO - 127.0.0.1 - - [26/Oct/2025 04:43:42] "POST /analyze_audio HTTP/1.1" 200 -
+2025-10-26 05:03:14,330 - werkzeug - INFO - 127.0.0.1 - - [26/Oct/2025 05:03:14] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2025-10-26 05:03:14,593 - __main__ - ERROR - Phoenix medical logging failed: can't subtract offset-naive and offset-aware datetimes
+2025-10-26 05:03:14,595 - werkzeug - INFO - 127.0.0.1 - - [26/Oct/2025 05:03:14] "POST /analyze_audio HTTP/1.1" 200 -
+2025-10-26 05:03:20,328 - __main__ - ERROR - Phoenix medical logging failed: can't subtract offset-naive and offset-aware datetimes
+2025-10-26 05:03:20,328 - __main__ - CRITICAL -    Breathing: 84.7 bpm (irregular)
+2025-10-26 05:03:20,328 - __main__ - CRITICAL -    Distress Score: 0.65
+2025-10-26 05:03:20,328 - __main__ - CRITICAL -    O2 Estimate: 87.6%
+2025-10-26 05:03:20,329 - __main__ - ERROR - Emergency alert trigger failed: can't subtract offset-naive and offset-aware datetimes
+2025-10-26 05:03:20,329 - werkzeug - INFO - 127.0.0.1 - - [26/Oct/2025 05:03:20] "POST /analyze_audio HTTP/1.1" 200 -
+2025-10-26 05:03:25,373 - __main__ - ERROR - Phoenix medical logging failed: can't subtract offset-naive and offset-aware datetimes
+2025-10-26 05:03:25,376 - werkzeug - INFO - 127.0.0.1 - - [26/Oct/2025 05:03:25] "POST /analyze_audio HTTP/1.1" 200 -
+2025-10-26 05:03:28,001 - __main__ - ERROR - Phoenix medical logging failed: can't subtract offset-naive and offset-aware datetimes
+2025-10-26 05:03:28,003 - werkzeug - INFO - 127.0.0.1 - - [26/Oct/2025 05:03:28] "POST /analyze_audio HTTP/1.1" 200 -
+2025-10-26 05:03:30,767 - __main__ - ERROR - Phoenix medical logging failed: can't subtract offset-naive and offset-aware datetimes
+2025-10-26 05:03:30,773 - werkzeug - INFO - 127.0.0.1 - - [26/Oct/2025 05:03:30] "POST /analyze_audio HTTP/1.1" 200 -
+2025-10-26 05:03:34,409 - __main__ - ERROR - Phoenix medical logging failed: can't subtract offset-naive and offset-aware datetimes
+2025-10-26 05:03:34,416 - werkzeug - INFO - 127.0.0.1 - - [26/Oct/2025 05:03:34] "POST /analyze_audio HTTP/1.1" 200 -
+2025-10-26 05:03:39,042 - __main__ - ERROR - Phoenix medical logging failed: can't subtract offset-naive and offset-aware datetimes
+2025-10-26 05:03:39,045 - werkzeug - INFO - 127.0.0.1 - - [26/Oct/2025 05:03:39] "POST /analyze_audio HTTP/1.1" 200 -
+2025-10-26 05:03:41,365 - __main__ - ERROR - Phoenix medical logging failed: can't subtract offset-naive and offset-aware datetimes
+2025-10-26 05:03:41,365 - __main__ - CRITICAL -    Breathing: 96.4 bpm (irregular)
+2025-10-26 05:03:41,365 - __main__ - CRITICAL -    Distress Score: 0.65
+2025-10-26 05:03:41,365 - __main__ - CRITICAL -    O2 Estimate: 84.1%
+2025-10-26 05:03:41,365 - __main__ - ERROR - Emergency alert trigger failed: can't subtract offset-naive and offset-aware datetimes
+2025-10-26 05:03:41,366 - werkzeug - INFO - 127.0.0.1 - - [26/Oct/2025 05:03:41] "POST /analyze_audio HTTP/1.1" 200 -
+2025-10-26 05:03:48,707 - __main__ - ERROR - Phoenix medical logging failed: can't subtract offset-naive and offset-aware datetimes
+2025-10-26 05:03:48,709 - __main__ - CRITICAL -    Breathing: 79.4 bpm (irregular)
+2025-10-26 05:03:48,710 - __main__ - CRITICAL -    Distress Score: 0.65
+2025-10-26 05:03:48,712 - __main__ - CRITICAL -    O2 Estimate: 89.2%
+2025-10-26 05:03:48,713 - __main__ - ERROR - Emergency alert trigger failed: can't subtract offset-naive and offset-aware datetimes
+2025-10-26 05:03:48,716 - werkzeug - INFO - 127.0.0.1 - - [26/Oct/2025 05:03:48] "POST /analyze_audio HTTP/1.1" 200 -
+2025-10-26 05:03:57,602 - __main__ - ERROR - Phoenix medical logging failed: can't subtract offset-naive and offset-aware datetimes
+2025-10-26 05:03:57,605 - __main__ - CRITICAL -    Breathing: 90.1 bpm (irregular)
+2025-10-26 05:03:57,606 - __main__ - CRITICAL -    Distress Score: 0.65
+2025-10-26 05:03:57,608 - __main__ - CRITICAL -    O2 Estimate: 86.0%
+2025-10-26 05:03:57,609 - __main__ - ERROR - Emergency alert trigger failed: can't subtract offset-naive and offset-aware datetimes
+2025-10-26 05:03:57,618 - werkzeug - INFO - 127.0.0.1 - - [26/Oct/2025 05:03:57] "POST /analyze_audio HTTP/1.1" 200 -
+2025-10-26 05:12:34,856 - werkzeug - INFO -  * Detected change in 'C:\\Users\\Admin\\OneDrive\\Desktop\\work\\HackAudioFeature_CLEAN\\neonatal_monitor.py', reloading

@@ -579,7 +579,7 @@
                     // Create analyzer for real-time audio processing
                     const analyzer = audioContext.createAnalyser();
                     analyzer.fftSize = 2048;
-                    analyzer.smoothingTimeConstant = 0.8;
+                    analyzer.smoothingTimeConstant = 0.0; // no temporal smear for PCM pulls
                     
                     microphone.connect(analyzer);
                     

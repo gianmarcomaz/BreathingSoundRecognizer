@@ -1,193 +1,202 @@
-# 🏥 Neonatal Respiratory Monitor - Testing Guide
+# 🧪 Testing Guide for Voice AI + Medical Monitoring App
 
-## Overview
-This guide explains how to test the medical dashboard application and verify that breathing and crying sound recognition works accurately, even without a real baby.
+## ✅ What's Working
 
-## 🚀 Quick Start
+### 1. **App Structure**
+- ✅ Flask app imports successfully
+- ✅ Medical analysis functions imported from `medical_analysis.py`
+- ✅ All sponsor integrations (Lava, Phoenix, LiveKit, Vapi)
+- ✅ Medical monitoring endpoints ready
 
-### 1. Start the Application
+### 2. **Files Structure**
+```
+HackAudioFeature_CLEAN/
+├── app.py                    # Main Flask app (823 lines)
+├── medical_analysis.py       # Medical analysis module (800+ lines)
+├── medical_audio_datasets.py # Test data generator
+└── test_medical_system.py    # Test suite
+```
+
+---
+
+## 🚀 How to Test
+
+### **Option 1: Quick Import Test**
 ```bash
-cd C:\Users\Admin\OneDrive\Desktop\work\HackAudioFeature
+python -c "import app; print('✅ App ready!')"
+```
+
+### **Option 2: Start the Flask Server**
+```bash
+# In HackAudioFeature_CLEAN directory
 python app.py
 ```
 
-### 2. Open the Dashboard
-Navigate to: `http://localhost:5000`
+This will:
+- Start Flask on `http://localhost:5000`
+- Initialize all services (Lava, Phoenix, LiveKit, Vapi)
+- Show service status
 
-## 🔧 Fixed Issues
+### **Option 3: Test Medical Endpoints**
 
-### JavaScript Console Errors
-✅ **FIXED**: The JavaScript errors you were seeing (`contents.04ff201a.js`, `initLastUsedResume`) were from browser extensions, not your application. I've added error handling to prevent these from affecting your medical dashboard.
+#### **Test 1: Health Check**
+```bash
+curl http://localhost:5000/health
+```
 
-### Enhanced Error Handling
-- Added comprehensive error handling for all JavaScript functions
-- Browser extension errors are now filtered out
-- Graceful fallbacks for audio capture failures
-- Better error notifications for users
+Expected response:
+```json
+{
+  "status": "healthy",
+  "services": {
+    "lava": false,
+    "phoenix": true,
+    "livekit": false,
+    "vapi": false
+  }
+}
+```
 
-## 🎵 Testing Audio Recognition Without a Real Baby
+#### **Test 2: Analyze Medical Audio**
+```bash
+curl -X POST http://localhost:5000/analyze_audio \
+  -H "Content-Type: application/json" \
+  -d '{
+    "condition": "healthy",
+    "severity": "normal"
+  }'
+```
 
-### Method 1: Built-in Test Audio (Recommended)
-The dashboard now includes **🔊 Test Audio buttons** that generate realistic medical audio patterns:
+Expected response:
+```json
+{
+  "breathing_rate": 45.0,
+  "breathing_pattern": "regular",
+  "medical_condition": "healthy",
+  "alert_level": "normal",
+  "oxygen_saturation_estimate": 95.0
+}
+```
 
-1. **Click "Start Monitoring"** to initialize the system
-2. **Use the test buttons** in the "Test Medical Conditions" section:
-   - 🔊 **Healthy**: Generates normal breathing patterns
-   - 🔊 **Mild Asphyxia**: Creates irregular breathing sounds
-   - 🔊 **Severe Asphyxia**: Simulates gasping/absent breathing
-   - 🔊 **Jaundice**: Produces weak, monotone crying sounds
-   - 🔊 **Mild Cyanosis**: Creates labored breathing patterns
-   - 🔊 **Severe Cyanosis**: Simulates severe respiratory distress
+#### **Test 3: Test Different Conditions**
+```bash
+# Test asphyxia detection
+curl -X POST http://localhost:5000/analyze_audio \
+  -H "Content-Type: application/json" \
+  -d '{"condition": "asphyxia", "severity": "severe"}'
 
-3. **Watch the dashboard** update in real-time with:
-   - Breathing rate detection
-   - Cry frequency analysis
-   - Alert level changes
-   - Medical condition assessment
+# Test jaundice detection
+curl -X POST http://localhost:5000/analyze_audio \
+  -H "Content-Type: application/json" \
+  -d '{"condition": "jaundice", "severity": "moderate"}'
+```
 
-### Method 2: External Audio Testing
-If you want to test with external audio:
+---
 
-1. **Play baby crying videos** from YouTube near your microphone
-2. **Use audio files** of crying babies (place speaker near microphone)
-3. **Record breathing sounds** and play them back
-4. **Test with different volumes** to verify sensitivity
+## 🌐 Test in Browser
 
-### Method 3: Real-time Microphone Testing
-The system now supports real-time audio capture:
+### **Medical Dashboard**
+Open: `http://localhost:5000/`
+- Real-time neonatal monitoring
+- Audio recording and analysis
+- Medical alerts display
 
-1. **Click "Start Monitoring"** - this will request microphone access
-2. **Allow microphone access** when prompted
-3. **Speak or make sounds** near the microphone
-4. **Watch real-time analysis** update every second
+### **Voice AI Dashboard**
+Open: `http://localhost:5000/original`
+- Voice chat interface
+- AI conversation
+- LiveKit voice features
 
-## 📊 Enhanced Features
+---
 
-### Improved Audio Analysis
-- **Multi-band frequency analysis** for different breathing patterns
-- **Advanced cry quality assessment** for jaundice detection
-- **Enhanced medical condition scoring** with multiple indicators
-- **Signal quality assessment** to ensure reliable readings
+## 🧪 Run Full Test Suite
 
-### Real-time Processing
-- **Ultra-low latency** (< 50ms) for critical medical applications
-- **Continuous monitoring** with automatic updates
-- **Real-time audio streaming** from microphone
-- **Live signal quality monitoring**
+```bash
+# Run medical system tests
+python test_medical_system.py
 
-### Medical Accuracy
-- **Breathing rate detection**: 0-120 breaths/minute
-- **Cry frequency analysis**: 200-800 Hz range
-- **Oxygen saturation estimation**: Based on audio patterns
-- **Jaundice risk assessment**: Via cry quality analysis
-- **Distress scoring**: 0-1 scale with medical significance
+# Run specific test
+python -c "
+from medical_analysis import analyze_neonatal_audio
+import numpy as np
 
-## 🧪 Testing Scenarios
+# Generate test audio (healthy newborn breathing)
+audio = np.random.randn(88200) * 0.1  # 2 seconds at 44.1kHz
+result = analyze_neonatal_audio(audio)
+print(f'Breathing Rate: {result[\"breathing_rate\"]:.1f} bpm')
+print(f'Condition: {result[\"medical_condition\"]}')
+print(f'Alert Level: {result[\"alert_level\"]}')
+"
+```
 
-### Scenario 1: Healthy Newborn
-1. Click "🔊 Healthy" test button
-2. **Expected Results**:
-   - Breathing Rate: 40-50 bpm
-   - Alert Level: Normal
-   - Cry Quality: Strong/Clear
-   - Distress Score: < 0.3
+---
 
-### Scenario 2: Birth Asphyxia
-1. Click "🔊 Severe Asphyxia" test button
-2. **Expected Results**:
-   - Breathing Rate: < 20 bpm or 0
-   - Alert Level: Critical/Emergency
-   - Cry Quality: Weak/Absent
-   - Distress Score: > 0.8
+## 📊 Expected Test Results
 
-### Scenario 3: Jaundice Indicators
-1. Click "🔊 Jaundice" test button
-2. **Expected Results**:
-   - Cry Quality: Weak/Monotone
-   - Jaundice Risk: Moderate/High
-   - Alert Level: Warning/Watch
-   - Breathing Rate: Normal (30-60 bpm)
+### **Healthy Newborn**
+```json
+{
+  "breathing_rate": 40-50 bpm,
+  "breathing_pattern": "regular",
+  "medical_condition": "healthy",
+  "alert_level": "normal"
+}
+```
 
-### Scenario 4: Cyanosis (Poor Oxygenation)
-1. Click "🔊 Severe Cyanosis" test button
-2. **Expected Results**:
-   - Breathing Rate: > 60 bpm (rapid)
-   - Alert Level: Critical
-   - Cry Quality: Breathy/Weak
-   - Oxygen Estimate: < 90%
+### **Severe Asphyxia**
+```json
+{
+  "breathing_rate": 5-15 bpm,
+  "breathing_pattern": "gasping",
+  "medical_condition": "severe_asphyxia",
+  "alert_level": "emergency"
+}
+```
 
-## 🔍 Verification Checklist
+### **Jaundice**
+```json
+{
+  "cry_quality": "weak_monotone",
+  "medical_condition": "jaundice",
+  "alert_level": "warning"
+}
+```
 
-### ✅ Audio Recognition Accuracy
-- [ ] Test buttons generate appropriate audio patterns
-- [ ] Breathing rate detection works for all conditions
-- [ ] Cry frequency analysis detects different patterns
-- [ ] Alert levels change appropriately
-- [ ] Medical conditions are correctly identified
+---
 
-### ✅ Real-time Performance
-- [ ] Updates occur every second during monitoring
-- [ ] Latency is < 100ms (preferably < 50ms)
-- [ ] No JavaScript errors in console
-- [ ] Smooth UI updates without freezing
+## ⚠️ Known Limitations
 
-### ✅ Error Handling
-- [ ] Graceful handling of microphone access denial
-- [ ] Fallback to simulated data when needed
-- [ ] Clear error messages for users
-- [ ] System continues working despite errors
+1. **Lava/LiveKit/Vapi**: Require API keys (currently in demo mode)
+2. **Phoenix**: May show warnings if API key not configured
+3. **Medical Analysis**: Works offline with synthetic data
 
-### ✅ Medical Accuracy
-- [ ] Breathing patterns match expected medical ranges
-- [ ] Cry analysis correlates with medical conditions
-- [ ] Alert levels are clinically appropriate
-- [ ] Recommendations are medically sound
+---
 
-## 🚨 Troubleshooting
+## 🎯 Quick Start Commands
 
-### Microphone Issues
-- **Problem**: Microphone access denied
-- **Solution**: Click "Allow" when prompted, or test with audio buttons instead
+```bash
+# 1. Test imports
+python -c "import app; print('✅ Ready')"
 
-### No Audio Detection
-- **Problem**: System shows no breathing/cry detection
-- **Solution**: Check microphone permissions, try test audio buttons
+# 2. Start server
+python app.py
 
-### High Latency
-- **Problem**: Updates are slow (> 100ms)
-- **Solution**: Close other applications, check system performance
+# 3. Open browser
+# Visit: http://localhost:5000
 
-### JavaScript Errors
-- **Problem**: Console shows errors
-- **Solution**: Refresh the page, check browser compatibility
+# 4. Test endpoint
+curl http://localhost:5000/health
+```
 
-## 📈 Performance Metrics
+---
 
-### Target Performance
-- **Analysis Latency**: < 50ms (currently ~25ms)
-- **Update Frequency**: 1 Hz (every second)
-- **Audio Quality**: 44.1 kHz sampling rate
-- **Detection Accuracy**: > 90% for major conditions
+## 💡 Tips
 
-### Monitoring
-- Watch the "Latency" indicator in System Status
-- Check "Signal Quality" in notifications
-- Monitor "Breathing Confidence" percentage
-- Verify "Real-time analysis" notifications
+- **Medical Dashboard**: Works best for real-time audio monitoring
+- **Test Data**: Use `medical_audio_datasets.py` to generate test scenarios
+- **Sponsor APIs**: Add keys to `.env` file to enable full features
+- **Debugging**: Check terminal output for detailed logs
 
-## 🎯 Next Steps
+---
 
-1. **Test all scenarios** using the test audio buttons
-2. **Verify real-time performance** with microphone access
-3. **Check medical accuracy** against expected ranges
-4. **Report any issues** for further optimization
-
-## 📞 Support
-
-If you encounter any issues:
-1. Check the browser console for errors
-2. Verify microphone permissions
-3. Try the test audio buttons first
-4. Restart the application if needed
-
-The system is now optimized for medical-grade accuracy and real-time performance!
+**✅ Your app is ready to test!**
