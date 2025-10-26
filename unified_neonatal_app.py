@@ -682,39 +682,51 @@ def breathing_sound_recognition():
         
         # Generate and display test cases
         for condition_key, info in diagnostics.items():
-            st.markdown("---")
-            
-            # Create columns for button and info button
-            btn_col, info_col = st.columns([3, 1])
-            
-            with btn_col:
-                if st.button(f"{info['icon']} {info['name']}", key=f"test_{condition_key}"):
-                    with st.spinner(f"Generating {info['name']} audio..."):
-                        # Generate audio
-                        audio = generate_synthetic_audio(duration=3.0, condition=condition_key)
-                        # Store in session state
-                        st.session_state.test_audio_samples[condition_key] = audio
-                        # Analyze
-                        st.session_state[f'metrics_{condition_key}'] = analyze_neonatal_audio(audio)
-                        # Auto-play audio by setting flag
-                        st.session_state[f'play_{condition_key}'] = True
-                        st.rerun()
-            
-            with info_col:
-                if st.button("ℹ️", key=f"info_{condition_key}"):
-                    st.session_state[f'show_info_{condition_key}'] = True
+            # Container for each diagnostic group
+            with st.container():
+                # Create columns for button and info button with better spacing
+                btn_col, info_col = st.columns([6, 1])
+                
+                with btn_col:
+                    if st.button(f"{info['icon']} {info['name']}", key=f"test_{condition_key}", use_container_width=True):
+                        with st.spinner(f"Generating {info['name']} audio..."):
+                            # Generate audio
+                            audio = generate_synthetic_audio(duration=3.0, condition=condition_key)
+                            # Store in session state
+                            st.session_state.test_audio_samples[condition_key] = audio
+                            # Analyze
+                            st.session_state[f'metrics_{condition_key}'] = analyze_neonatal_audio(audio)
+                            # Auto-play audio by setting flag
+                            st.session_state[f'play_{condition_key}'] = True
+                            st.rerun()
+                
+                with info_col:
+                    if st.button("ℹ️", key=f"info_{condition_key}", use_container_width=True):
+                        st.session_state[f'show_info_{condition_key}'] = True
+                
+                st.markdown("<br>", unsafe_allow_html=True)
             
             # Show info popup
             if st.session_state.get(f'show_info_{condition_key}', False):
                 with st.expander(f"📋 {info['name']} - Condition Details", expanded=True):
-                    st.write(f"**Severity:** {info['severity'].upper()}")
-                    st.write(f"**Breathing Rate:** {info['breathing_rate']}")
-                    st.write(f"**Breathing Pattern:** {info['pattern']}")
-                    st.write(f"**Cry Characteristics:** {info['cry']}")
-                    st.markdown(f"**Description:** {info['description']}")
+                    col1, col2 = st.columns(2)
+                    
+                    with col1:
+                        st.markdown("**📊 Characteristics:**")
+                        st.write(f"• **Severity:** {info['severity'].upper()}")
+                        st.write(f"• **Breathing Rate:** {info['breathing_rate']}")
+                        st.write(f"• **Pattern:** {info['pattern']}")
+                    
+                    with col2:
+                        st.markdown("**🔊 Audio Profile:**")
+                        st.write(f"• **Cry Frequency:** {info['cry']}")
+                        st.write(f"• **Pattern Type:** {info['description'].split('-')[0].strip()}")
+                    
+                    st.markdown("---")
+                    st.markdown(f"**📝 Description:** {info['description']}")
                     
                     # Add clinical details
-                    st.markdown("### Clinical Significance")
+                    st.markdown("### ⚕️ Clinical Significance")
                     if condition_key == 'healthy':
                         st.success("✅ Normal physiological patterns - continue routine monitoring")
                     elif condition_key == 'asphyxia':
@@ -1010,21 +1022,144 @@ def image_vitals_analysis():
 # ============================================================================
 
 def main():
-    # Custom CSS
+    # Custom CSS for improved aesthetics and proportions
     st.markdown("""
     <style>
-    .stMetric {
-        background-color: #1e1e2e;
-        padding: 1rem;
-        border-radius: 0.5rem;
-        border: 1px solid #00ff88;
+    /* Overall theme improvements */
+    .stApp {
+        background: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 100%);
     }
+    
+    /* Metrics styling */
+    .stMetric {
+        background: linear-gradient(135deg, #1e1e2e 0%, #252539 100%);
+        padding: 1.2rem;
+        border-radius: 0.75rem;
+        border: 2px solid #00ff88;
+        box-shadow: 0 4px 6px rgba(0, 255, 136, 0.1);
+        transition: all 0.3s ease;
+    }
+    
+    .stMetric:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 12px rgba(0, 255, 136, 0.2);
+    }
+    
+    /* Main header */
     .main-header {
         background: linear-gradient(135deg, #16213e 0%, #0f3460 100%);
-        padding: 2rem;
-        border-radius: 1rem;
-        margin-bottom: 2rem;
+        padding: 2.5rem;
+        border-radius: 1.2rem;
+        margin-bottom: 2.5rem;
         border: 3px solid #00ff88;
+        box-shadow: 0 8px 16px rgba(0, 255, 136, 0.15);
+    }
+    
+    /* Button improvements */
+    .stButton > button {
+        width: 100%;
+        padding: 0.75rem 1.5rem;
+        border-radius: 0.5rem;
+        font-weight: 600;
+        border: none;
+        background: linear-gradient(135deg, #00ff88 0%, #00cc70 100%);
+        color: #0a0e27;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 4px rgba(0, 255, 136, 0.3);
+    }
+    
+    .stButton > button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0, 255, 136, 0.4);
+        background: linear-gradient(135deg, #00ffaa 0%, #00ff88 100%);
+    }
+    
+    /* Improve info button specifically */
+    .stButton > button:has-text("ℹ️") {
+        padding: 0.5rem 0.75rem;
+        font-size: 1.2rem;
+    }
+    
+    /* Diagnostic button styling */
+    [data-testid="stButton"] button {
+        min-height: 3rem;
+        font-size: 0.95rem;
+    }
+    
+    /* Sidebar improvements */
+    [data-testid="stSidebar"] {
+        background: linear-gradient(180deg, #1a1f3a 0%, #16213e 100%);
+    }
+    
+    /* Expander styling */
+    .streamlit-expanderHeader {
+        background: linear-gradient(135deg, #2a2f4a 0%, #1e2439 100%);
+        border-radius: 0.5rem;
+        border: 1px solid #00ff88;
+        padding: 1rem;
+        font-weight: 600;
+    }
+    
+    /* Audio player styling */
+    audio {
+        width: 100%;
+        margin: 0.5rem 0;
+        border-radius: 0.5rem;
+    }
+    
+    /* Caption improvements */
+    .caption {
+        font-size: 0.85rem;
+        color: #b0b0b0;
+        margin-top: 0.5rem;
+    }
+    
+    /* Subheader improvements */
+    h2 {
+        border-bottom: 2px solid #00ff88;
+        padding-bottom: 0.5rem;
+        margin-bottom: 1rem;
+    }
+    
+    h3 {
+        margin-top: 1.5rem;
+        margin-bottom: 1rem;
+        color: #00ff88;
+    }
+    
+    /* Input field styling */
+    .stNumberInput > div > div > input {
+        background: #1e1e2e;
+        border: 1px solid #00ff88;
+        border-radius: 0.5rem;
+        color: white;
+    }
+    
+    .stSelectbox > div > div > select {
+        background: #1e1e2e;
+        border: 1px solid #00ff88;
+        border-radius: 0.5rem;
+        color: white;
+    }
+    
+    /* Improve spacing in diagnostic test cases */
+    .diagnostic-group {
+        margin-bottom: 1rem;
+        padding: 1rem;
+        background: rgba(30, 30, 46, 0.5);
+        border-radius: 0.75rem;
+        border: 1px solid rgba(0, 255, 136, 0.2);
+    }
+    
+    /* Alert messages */
+    .stAlert {
+        border-radius: 0.5rem;
+        border-left: 4px solid #00ff88;
+    }
+    
+    /* Better column spacing */
+    .stColumns {
+        gap: 1.5rem;
     }
     </style>
     """, unsafe_allow_html=True)
