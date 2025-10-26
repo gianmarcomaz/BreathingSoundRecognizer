@@ -51,7 +51,7 @@ try:
     MEDICAL_ANALYSIS_AVAILABLE = True
 except ImportError:
     MEDICAL_ANALYSIS_AVAILABLE = False
-    logger.warning("medical_analysis module not available")
+    # Logger not yet defined at this point, will log later if needed
 
 # Load environment variables
 load_dotenv()
@@ -230,7 +230,7 @@ class NeonatalMonitor:
         except Exception as e:
             logger.error(f"❌ Vapi medical setup failed: {e}")
     
-    def start_monitoring(self, birth_time: datetime = None):
+    def start_monitoring(self, birth_time: Optional[datetime] = None):
         """Start continuous neonatal monitoring"""
         self.birth_time = birth_time or datetime.now()
         self.golden_minute_active = True
