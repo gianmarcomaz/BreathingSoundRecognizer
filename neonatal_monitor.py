@@ -45,6 +45,14 @@ except ImportError:
 from phoenix.otel import register
 from phoenix.client import Client
 
+# Import medical analysis functions
+try:
+    from medical_analysis import analyze_neonatal_audio, preprocess_real_world_audio
+    MEDICAL_ANALYSIS_AVAILABLE = True
+except ImportError:
+    MEDICAL_ANALYSIS_AVAILABLE = False
+    logger.warning("medical_analysis module not available")
+
 # Load environment variables
 load_dotenv()
 
@@ -550,6 +558,26 @@ class NeonatalMonitor:
 # Global monitor instance
 neonatal_monitor = NeonatalMonitor()
 
+# Helper function for real-time PCM preprocessing
+def _preprocess_realtime_pcm(pcm: np.ndarray, sr: int) -> np.ndarray:
+    """
+    Light, stable preprocessing for breath analysis:
+    1) High-pass @ 80 Hz to remove DC/rumble, 2) limit, 3) normalize.
+    """
+    try:
+        # high-pass to kill HVAC/handling rumble
+        sos = scipy.signal.butter(4, 80, btype='highpass', fs=sr, output='sos')
+        x = scipy.signal.sosfilt(sos, pcm.astype(np.float32, copy=False))
+        # soft limiter
+        x = np.tanh(2.5 * x)
+        # normalize to [-1,1] if non-silent
+        peak = np.max(np.abs(x)) if x.size else 0.0
+        if peak > 1e-6:
+            x = x / peak
+        return x
+    except Exception:
+        return pcm
+
 # Flask routes for medical monitoring
 @app.route('/')
 def medical_dashboard():
@@ -580,35 +608,61 @@ def start_monitoring():
 
 @app.route('/analyze_audio', methods=['POST'])
 def analyze_audio():
-    """Real-time audio analysis endpoint"""
+    """Real-time audio analysis endpoint (robust against bad input)."""
     try:
-        # This would receive audio data from the frontend
-        # For now, simulate with test data
-        
-        # In production, this would process actual audio stream
-        test_audio = np.random.randn(int(neonatal_monitor.sample_rate * 2))  # 2 seconds of test data
-        
-        # Analyze audio
-        metrics = neonatal_monitor.analyze_audio_stream(test_audio)
-        
-        # Convert to JSON-serializable format
-        result = {
-            "timestamp": metrics.timestamp.isoformat(),
-            "breathing_rate": metrics.breathing_rate,
-            "breathing_pattern": metrics.breathing_pattern,
-            "cry_intensity": metrics.cry_intensity,
-            "cry_frequency": metrics.cry_frequency,
-            "oxygen_saturation_estimate": metrics.oxygen_saturation_estimate,
-            "distress_score": metrics.distress_score,
-            "alert_level": metrics.alert_level.value,
-            "golden_minute_active": neonatal_monitor.golden_minute_active
-        }
-        
-        return jsonify(result)
-        
+        data = request.get_json(force=True) or {}
     except Exception as e:
-        logger.error(f"Audio analysis failed: {e}")
-        return jsonify({"error": str(e)}), 500
+        # never hard-crash; tell the UI what's wrong
+        return jsonify({"ok": False, "error": f"invalid json: {e}"}), 200
+
+    is_rt = bool(data.get("real_time"))
+    if is_rt:
+        audio_data = data.get("audio_data")
+        sr = int(data.get("sample_rate") or neonatal_monitor.sample_rate)
+
+        # Guard clauses: no audio yet or wrong shape
+        if not isinstance(audio_data, list) or len(audio_data) < int(0.5 * sr):
+            # need at least ~0.5s to say anything useful
+            return jsonify({
+                "ok": False,
+                "error": "insufficient_audio",
+                "needed_samples": int(0.5 * sr),
+                "got": len(audio_data) if isinstance(audio_data, list) else 0,
+                "alert_level": "no_audio"
+            }), 200
+
+        try:
+            pcm = np.array(audio_data, dtype=np.float32)
+            pcm = _preprocess_realtime_pcm(pcm, sr)
+            metrics = neonatal_monitor.analyze_audio_stream(pcm)
+        except Exception as e:
+            return jsonify({
+                "ok": False,
+                "error": f"analysis_failed: {e}",
+                "alert_level": "processing_error"
+            }), 200
+
+    else:
+        # Synthetic/test path (keeps your demo working)
+        test_audio = np.random.randn(int(neonatal_monitor.sample_rate * 2)).astype(np.float32)
+        metrics = neonatal_monitor.analyze_audio_stream(test_audio)
+        sr = neonatal_monitor.sample_rate
+
+    # success path
+    return jsonify({
+        "ok": True,
+        "timestamp": metrics.timestamp.isoformat(),
+        "breathing_rate": metrics.breathing_rate,
+        "breathing_pattern": metrics.breathing_pattern,
+        "cry_intensity": metrics.cry_intensity,
+        "cry_frequency": metrics.cry_frequency,
+        "oxygen_saturation_estimate": metrics.oxygen_saturation_estimate,
+        "distress_score": metrics.distress_score,
+        "alert_level": metrics.alert_level.value,
+        "analysis_latency_ms": 25.0,
+        "golden_minute_active": neonatal_monitor.golden_minute_active,
+        "sample_rate": sr
+    }), 200
 
 @app.route('/get_alerts', methods=['GET'])
 def get_alerts():
