@@ -633,20 +633,120 @@ def breathing_sound_recognition():
                 st.warning("⚠️ Simulated data used - configure microphone for real-time analysis")
     
     with col2:
-        st.subheader("Test Conditions")
-        st.caption("Generate test audio patterns")
+        st.subheader("🧪 Diagnostic Test Cases")
+        st.caption("Play audio samples for different conditions")
         
-        if st.button("🔊 Healthy Pattern"):
-            with st.spinner("Generating..."):
-                audio = generate_synthetic_audio(duration=2.0, condition='healthy')
-                metrics = analyze_neonatal_audio(audio)
-                st.json(metrics)
+        # Store audio samples in session state
+        if 'test_audio_samples' not in st.session_state:
+            st.session_state.test_audio_samples = {}
         
-        if st.button("🚨 Asphyxia Pattern"):
-            with st.spinner("Generating..."):
-                audio = generate_synthetic_audio(duration=2.0, condition='asphyxia')
-                metrics = analyze_neonatal_audio(audio)
-                st.json(metrics)
+        # Define diagnostic conditions with descriptions
+        diagnostics = {
+            'healthy': {
+                'name': '✅ Healthy Baby',
+                'icon': '✅',
+                'breathing_rate': '30-60 bpm',
+                'pattern': 'Regular, smooth breaths',
+                'cry': 'Normal frequency (350-450 Hz), moderate intensity',
+                'description': 'Normal breathing pattern with regular rhythm, healthy cry patterns',
+                'severity': 'normal'
+            },
+            'asphyxia': {
+                'name': '🚨 Asphyxia',
+                'icon': '🚨',
+                'breathing_rate': '5-25 bpm',
+                'pattern': 'Irregular, gasping breaths',
+                'cry': 'Weak cry (250-300 Hz), very low intensity',
+                'description': 'Inadequate oxygen delivery - irregular breathing, weak or absent cry',
+                'severity': 'critical'
+            },
+            'jaundice': {
+                'name': '🟡 Jaundice',
+                'icon': '🟡',
+                'breathing_rate': '30-60 bpm',
+                'pattern': 'Normal breathing',
+                'cry': 'Weak, monotone cry (220-280 Hz), low intensity',
+                'description': 'High bilirubin levels - lethargy, weak monotone cry, normal breathing',
+                'severity': 'moderate'
+            },
+            'cyanosis': {
+                'name': '🔵 Cyanosis',
+                'icon': '🔵',
+                'breathing_rate': '70-110 bpm',
+                'pattern': 'Rapid, shallow, labored',
+                'cry': 'High-pitched, shrill cry (450-500 Hz)',
+                'description': 'Low oxygen saturation - rapid breathing, high-pitched distressed cry',
+                'severity': 'critical'
+            }
+        }
+        
+        # Generate and display test cases
+        for condition_key, info in diagnostics.items():
+            st.markdown("---")
+            
+            # Create columns for button and info button
+            btn_col, info_col = st.columns([3, 1])
+            
+            with btn_col:
+                if st.button(f"{info['icon']} {info['name']}", key=f"test_{condition_key}"):
+                    with st.spinner(f"Generating {info['name']} audio..."):
+                        # Generate audio
+                        audio = generate_synthetic_audio(duration=3.0, condition=condition_key)
+                        # Store in session state
+                        st.session_state.test_audio_samples[condition_key] = audio
+                        # Analyze
+                        st.session_state[f'metrics_{condition_key}'] = analyze_neonatal_audio(audio)
+                        # Auto-play audio by setting flag
+                        st.session_state[f'play_{condition_key}'] = True
+                        st.rerun()
+            
+            with info_col:
+                if st.button("ℹ️", key=f"info_{condition_key}"):
+                    st.session_state[f'show_info_{condition_key}'] = True
+            
+            # Show info popup
+            if st.session_state.get(f'show_info_{condition_key}', False):
+                with st.expander(f"📋 {info['name']} - Condition Details", expanded=True):
+                    st.write(f"**Severity:** {info['severity'].upper()}")
+                    st.write(f"**Breathing Rate:** {info['breathing_rate']}")
+                    st.write(f"**Breathing Pattern:** {info['pattern']}")
+                    st.write(f"**Cry Characteristics:** {info['cry']}")
+                    st.markdown(f"**Description:** {info['description']}")
+                    
+                    # Add clinical details
+                    st.markdown("### Clinical Significance")
+                    if condition_key == 'healthy':
+                        st.success("✅ Normal physiological patterns - continue routine monitoring")
+                    elif condition_key == 'asphyxia':
+                        st.error("🚨 CRITICAL: Immediate medical intervention required - administer oxygen, ensure airway")
+                    elif condition_key == 'jaundice':
+                        st.warning("⚠️ Monitor bilirubin levels, ensure adequate feeding")
+                    elif condition_key == 'cyanosis':
+                        st.error("🚨 CRITICAL: Low oxygen - check SpO2, consider supplemental oxygen")
+            
+            # Play audio if generated
+            if condition_key in st.session_state.test_audio_samples:
+                audio = st.session_state.test_audio_samples[condition_key]
+                
+                # Display metrics
+                if f'metrics_{condition_key}' in st.session_state:
+                    metrics = st.session_state[f'metrics_{condition_key}']
+                    
+                    # Metrics display
+                    st.caption(f"**Breathing Rate:** {metrics['breathing_rate']:.1f} bpm")
+                    st.caption(f"**Pattern:** {metrics['breathing_pattern']}")
+                    st.caption(f"**Alert Level:** {metrics['alert_level'].upper()}")
+                    
+                    # Recommendation
+                    if metrics['alert_level'] in ['critical', 'emergency']:
+                        st.error(f"🚨 {metrics['clinical_recommendations']}")
+                    elif metrics['alert_level'] == 'warning':
+                        st.warning(f"⚠️ {metrics['clinical_recommendations']}")
+                    else:
+                        st.success(f"✅ {metrics['clinical_recommendations']}")
+                
+                # Audio player
+                st.audio(audio, sample_rate=44100, format='audio/wav')
         
         st.markdown("---")
         st.subheader("API Status")
