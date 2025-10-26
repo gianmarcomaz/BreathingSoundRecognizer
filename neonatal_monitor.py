@@ -539,8 +539,78 @@ class NeonatalMonitor:
             # - Integration with hospital alert systems
             # - Automated emergency protocols
             
+            # Trigger Vapi emergency call for EMERGENCY level alerts
+            if metrics.alert_level == AlertLevel.EMERGENCY:
+                self._call_emergency_contact_via_vapi(alert)
+            
         except Exception as e:
             logger.error(f"Emergency alert trigger failed: {e}")
+    
+    def _call_emergency_contact_via_vapi(self, alert: MedicalAlert, phone_number: str = "+12025551234"):
+        """
+        Place emergency call via Vapi when critical alert is detected
+        This is the panic button - auto-calls caregiver/nurse when baby isn't breathing
+        """
+        if not hasattr(self, 'vapi_secret_token') or not self.vapi_secret_token:
+            logger.warning("⚠️  Vapi not configured, cannot place emergency call")
+            return False
+        
+        try:
+            headers = {
+                "Authorization": f"Bearer {self.vapi_secret_token}",
+                "Content-Type": "application/json"
+            }
+            
+            # Generate emergency message based on alert type
+            emergency_message = f"""EMERGENCY ALERT: Possible severe neonatal asphyxia detected. 
+            No breathing detected. Breathing rate: {alert.metrics.breathing_rate:.1f} bpm. 
+            Distress score: {alert.metrics.distress_score:.2f}. 
+            Begin resuscitation immediately. Recommended action: {alert.recommended_action}"""
+            
+            # Prepare the call payload for Vapi phone endpoint (using correct camelCase format)
+            payload = {
+                "assistantId": self.vapi_assistant_id,
+                "phoneNumber": phone_number,  # Direct phone number field
+                "customer": {
+                    "number": phone_number
+                },
+                "metadata": {
+                    "alert_type": alert.alert_type,
+                    "breathing_rate": alert.metrics.breathing_rate,
+                    "distress_score": alert.metrics.distress_score,
+                    "recommended_action": alert.recommended_action,
+                    "severity": alert.severity.value,
+                    "emergency": True,
+                    "first_message": emergency_message
+                }
+            }
+            
+            logger.critical(f"[EMERGENCY] Attempting Vapi emergency call to {phone_number}")
+            logger.critical(f"Emergency message: {emergency_message}")
+            
+            # Make the API call to place the emergency call using /call/phone endpoint
+            resp = requests.post(
+                f"{self.vapi_base_url}/call/phone",
+                headers=headers,
+                json=payload,
+                timeout=10
+            )
+            
+            if resp.status_code in [200, 201]:
+                call_data = resp.json()
+                logger.critical(f"[SUCCESS] Vapi emergency call placed successfully!")
+                logger.critical(f"   Call ID: {call_data.get('id', 'unknown')}")
+                logger.critical(f"   Status: {call_data.get('status', 'unknown')}")
+                return True
+            else:
+                logger.error(f"[FAILED] Vapi call failed: {resp.status_code} - {resp.text}")
+                return False
+                
+        except Exception as e:
+            logger.error(f"[ERROR] Vapi emergency call exception: {e}")
+            import traceback
+            traceback.print_exc()
+            return False
     
     def _create_error_metrics(self) -> RespiratoryMetrics:
         """Create error metrics when analysis fails"""
@@ -741,6 +811,61 @@ def get_alerts():
     except Exception as e:
         logger.error(f"Failed to get alerts: {e}")
         return jsonify({"error": str(e)}), 500
+
+@app.route('/trigger_emergency_call', methods=['POST'])
+def trigger_emergency_call():
+    """Manually trigger emergency call via Vapi (for UI button)"""
+    try:
+        data = request.get_json() or {}
+        phone_number = data.get('phone_number', '+12025551234')
+        
+        # Create a mock emergency alert for testing
+        test_metrics = RespiratoryMetrics(
+            timestamp=datetime.now(),
+            breathing_rate=0.0,  # No breathing = emergency
+            breathing_pattern="absent",
+            cry_intensity=0.0,
+            cry_frequency=0.0,
+            oxygen_saturation_estimate=45.0,
+            distress_score=1.0,
+            alert_level=AlertLevel.EMERGENCY
+        )
+        
+        test_alert = MedicalAlert(
+            timestamp=datetime.now(),
+            alert_type="severe_asphyxia",
+            severity=AlertLevel.EMERGENCY,
+            confidence=0.95,
+            metrics=test_metrics,
+            recommended_action="IMMEDIATE RESUSCITATION - Begin ventilation protocol",
+            time_since_birth=timedelta(minutes=1)
+        )
+        
+        # Attempt to place the call
+        call_success = neonatal_monitor._call_emergency_contact_via_vapi(test_alert, phone_number)
+        
+        if call_success:
+            return jsonify({
+                "success": True,
+                "message": "Emergency call placed successfully",
+                "phone_number": phone_number,
+                "call_type": "emergency"
+            })
+        else:
+            return jsonify({
+                "success": False,
+                "message": "Emergency call failed - Vapi may not be configured",
+                "phone_number": phone_number,
+                "call_type": "emergency",
+                "hint": "Add VAPI_SECRET_TOKEN and VAPI_ASSISTANT_ID to .env file"
+            }), 200  # Return 200 even on failure to show message
+            
+    except Exception as e:
+        logger.error(f"Emergency call trigger failed: {e}")
+        return jsonify({
+            "success": False,
+            "error": str(e)
+        }), 500
 
 @app.route('/health')
 def health_check():
